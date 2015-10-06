@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Anime-List</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+
+<body>
+
+<!-- <ol class="breadcrumb">
+  <li><a href="#">Home</a></li>
+  <li><a href="#">Library</a></li>
+  <li class="active">Data</li>
+</ol> -->
+
+<div class='container'>
+	<div class='row'>
+
+		<!-- navigator header -->
+		<div class='col-md-6 col-xs-12'>
+			<ul class="nav nav-pills">
+			  <li role="presentation" class="<%= @section == 'animes' ? 'active' : 'inactive'%>"> <%= link_to 'Animes', animes_path %> </li>
+			  <li role="presentation" class="<%= @section == 'top10' ? 'active' : 'inactive'%>"> <%= link_to 'Top10', top10_path %> </li>
+			</ul>
+		</div>
+
+		<!-- login -->
+		<div class='col-md-6 col-xs-12'>
+			<form class="form-inline">
+			  <div class="form-group">
+			    <label class="sr-only" for="exampleInputEmail3">Email address</label>
+			    <input type="email" class="form-control" id="exampleInputEmail3" placeholder="Email">
+			  </div>
+			  <div class="form-group">
+			    <label class="sr-only" for="exampleInputPassword3">Password</label>
+			    <input type="password" class="form-control" id="exampleInputPassword3" placeholder="Password">
+			  </div>
+			  <div class="checkbox">
+			    <label>
+			      <input type="checkbox"> Remember me
+			    </label>
+			  </div>
+			  <button type="submit" class="btn btn-success">Sign in</button>
+			</form>
+		</div>
+
+	</div>
+
+	<div class='row'>
+	
+		<!-- main content (index.html) -->
+		<div class='col-md-12 col-xs-12'> <%= yield %> </div>
+
+	</div>
+</div>
+
+
+
+<p class="notice"><%= notice %></p>
+<p class="alert"><%= alert %></p>
+
+
+</body>
+
+</html>

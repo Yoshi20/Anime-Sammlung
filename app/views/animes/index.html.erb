@@ -1,0 +1,107 @@
+<h1>Anime-List</h1>
+
+<div>
+  <!-- Letter list -->
+  <div class='col-md-5 col-xs-12'>
+    <%= link_to animes_path do %>
+      <% if not params[:order_by_letter].present? %>
+        <u> Alle </u>
+      <% else %>
+         Alle
+      <% end %>
+    <% end %>
+
+    <% ('A'.. 'Z').each do |letter| %>
+      <%= link_to animes_path(order_by_letter:letter) do %>
+        <% if letter == params[:order_by_letter] %>
+          <u> <%= letter %> </u>
+        <% else %>
+          <%= letter %>
+        <% end %>
+      <% end %> 
+    <% end %>
+  </div>
+
+  <!-- search form -->
+  <%= form_tag animes_path, method:'get' do %>
+    <div class='col-md-3 col-md-offset-4 col-xs-12'>
+      <%= text_field_tag :search, params[:search] %>
+      <%= submit_tag "Search", name:nil %>
+    </div>
+<% end %>
+
+</div>
+
+<!-- anime list -->
+<table class='table table-striped'>
+  <thead>
+    <tr>
+      <th><%= link_to 'Name', animes_path(sort_params_for("name", params)) %></th>
+      <th>
+        <%= link_to 'Genres', animes_path %>
+        <%= select(:genre_ids, @genres, @genres.collect {|g| g.name}) %>
+      </th>
+      <th class='centered'><%= link_to 'Episodes', animes_path(sort_params_for("episodes", params)) %></th>
+      <th class='centered'>Finished</th>
+      <th>Description</th>
+      <th class='centered'><%= link_to 'Rating (1... 10)', animes_path(sort_params_for("rating", params)) %></th>
+      <th class='action'></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%= render @animes %>
+  </tbody>
+</table>
+
+<div>
+  <!-- page navigator -->
+  <nav class='col-md-6 col-xs-12'>
+    <ul class="pagination">
+      <li>
+        <% if @animes.current_page > 1 %>
+        <!-- tabl_params is a helper methode to whitelist the needed params to sort and order -->
+          <%= link_to animes_path(table_params.merge(page: @animes.current_page-1)), aria: {label: "Previous"} do %>
+            <span aria-hidden="true">&laquo;</span>
+          <% end %>
+        <% else %>
+          <span aria-hidden="true">&laquo;</span>
+        <% end %>
+      </li>
+      <% (1..@animes.total_pages).each do |x| %>
+        <li class=<%= "active" if x == @animes.current_page %>> <%= link_to x.to_s, animes_path(table_params.merge(page: x)) %> </li>
+      <% end %>
+      <li>
+        <% if @animes.current_page < @animes.total_pages %>
+          <%= link_to animes_path(table_params.merge(page: @animes.current_page+1)), aria: {label: "Next"} do %>
+            <span aria-hidden="true">&raquo;</span>
+          <% end %>
+        <% else %>
+          <span aria-hidden="true">&raquo;</span>
+        <% end %>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Import Animes -->
+  <div class='col-md-4 col-md-offset-1 col-xs-12'>
+    <h2>Import Animes</h2>
+    <%= form_tag import_animes_path, multipart:true do %>
+      <%= file_field_tag :file %>
+      <%= submit_tag "Import", class:'btn btn-primary'%>
+    <% end %>
+  </div>
+
+  <!-- 'Add Anime' button -->
+  <div class='col-md-1 col-md-offset-0 col-xs-12'>
+    <%= link_to 'Add Anime', new_anime_path, class:'btn btn-primary' %>
+  </div>
+
+</div>
+
+<!-- random picture -->
+<div class='col-md-1 col-md-offset-11 col-xs-12'>
+  <%= link_to animes_path do %>
+    <img src="<%= raw '/assets/rainbow.png'%>">
+  <% end %>
+</div>

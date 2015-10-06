@@ -1,0 +1,36 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @anime.name %>
+</p>
+
+<p>
+  <strong>Genre:</strong>
+  <% @anime.genres.each do |genre| %>
+  <%= genre.name %>
+  <% end %>
+</p>
+
+<p>
+  <strong>Episodes:</strong>
+  <%= @anime.episodes %>
+</p>
+
+<p>
+  <strong>Finished:</strong>
+  <%= @anime.finished %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @anime.description %>
+</p>
+
+<p>
+  <strong>Rating:</strong>
+  <%= @anime.rating %>
+</p>
+
+<%= link_to 'Edit', edit_anime_path(@anime), class:'btn btn-default btn-xs' %> |
+<%= link_to 'Back', animes_path(@anime), class:'btn btn-default btn-xs' %>
