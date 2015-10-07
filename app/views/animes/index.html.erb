@@ -4,10 +4,10 @@
   <!-- Letter list -->
   <div class='col-md-5 col-xs-12'>
     <%= link_to animes_path do %>
-      <% if not params[:order_by_letter].present? %>
-        <u> Alle </u>
+      <% if params[:order_by_letter].present? %>
+        Alle
       <% else %>
-         Alle
+        <u> Alle </u>
       <% end %>
     <% end %>
 
@@ -41,10 +41,10 @@
         <%= link_to 'Genres', animes_path %>
         <%= select(:genre_ids, @genres, @genres.collect {|g| g.name}) %>
       </th>
-      <th class='centered'><%= link_to 'Episodes', animes_path(sort_params_for("episodes", params)) %></th>
-      <th class='centered'>Finished</th>
+      <th class='text-center'><%= link_to 'Episodes', animes_path(sort_params_for("episodes", params)) %></th>
+      <th class='text-center'>Finished</th>
       <th>Description</th>
-      <th class='centered'><%= link_to 'Rating (1... 10)', animes_path(sort_params_for("rating", params)) %></th>
+      <th class='text-center'><%= link_to 'Average Rating', animes_path(sort_params_for("rating", params)) %></th>
       <th class='action'></th>
     </tr>
   </thead>
@@ -83,25 +83,29 @@
     </ul>
   </nav>
 
-  <!-- Import Animes -->
-  <div class='col-md-4 col-md-offset-1 col-xs-12'>
-    <h2>Import Animes</h2>
-    <%= form_tag import_animes_path, multipart:true do %>
-      <%= file_field_tag :file %>
-      <%= submit_tag "Import", class:'btn btn-primary'%>
-    <% end %>
-  </div>
+  <% if user_signed_in? %>
 
-  <!-- 'Add Anime' button -->
-  <div class='col-md-1 col-md-offset-0 col-xs-12'>
-    <%= link_to 'Add Anime', new_anime_path, class:'btn btn-primary' %>
-  </div>
+    <!-- Import Animes -->
+    <div class='col-md-4 col-md-offset-1 col-xs-12'>
+      <h2>Import Animes</h2>
+      <%= form_tag import_animes_path, multipart:true do %>
+        <%= file_field_tag :file %>
+        <%= submit_tag "Import", class:'btn btn-primary'%>
+      <% end %>
+    </div>
+
+    <!-- 'Add Anime' button -->
+    <div class='col-md-1 col-md-offset-0 col-xs-12'>
+      <%= link_to 'Add Anime', new_anime_path, class:'btn btn-primary' %>
+    </div>
+
+  <% end %>
 
 </div>
 
 <!-- random picture -->
 <div class='col-md-1 col-md-offset-11 col-xs-12'>
   <%= link_to animes_path do %>
-    <img src="<%= raw '/assets/rainbow.png'%>">
+    <%= image_tag 'rainbow.png' %>
   <% end %>
 </div>

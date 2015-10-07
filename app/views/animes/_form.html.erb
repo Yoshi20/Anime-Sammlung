@@ -33,7 +33,11 @@
   </div>
   <div class="field form-group">
     <%= f.label :rating %><br>
-    <%= f.number_field :rating, value:@anime.rating, min:1, max:10 %>
+    <% if @anime.ratings.count.zero? %>
+      <%= f.number_field :rating, value:@anime.rating, min:1, max:6 %>
+    <% else %>
+      <%= f.number_field :rating, value:@anime.average_rating, min:1, max:6 %>
+    <% end %>
   </div>
   <div class="actions form-group">
     <%= f.submit %>

@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+  has_many :ratings
+
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   # run rake db:migrate after a change
@@ -6,7 +9,6 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
          # Besides :streches, you can define:
          # :pepper, :encryptor, :confirm_within, :remember_for, :timeout_in, :unlock_in, ...
-
 
   #before_action :authenticate_user!
   #.user_signed_in?
@@ -23,5 +25,15 @@ class User < ActiveRecord::Base
 	# 	UserMailer.login_data().deliver
 	# end
 
+
+  def get_rating_for(anime)
+    ratings.find_by(anime:anime)
+  end
+
+  def set_rating_for(anime, new_rating)
+    r = Rating.find_or_create_by({anime:anime, user:self}) # get or create a rating
+    r.rating = new_rating  # set new rating
+    r.save
+  end
 
 end

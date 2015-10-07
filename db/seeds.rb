@@ -28,3 +28,7 @@ Genre.find_or_create_by(name:'Mystery')
 Genre.find_or_create_by(name:'Vampire')
 Genre.find_or_create_by(name:'Historical')
 Genre.find_or_create_by(name:'Adventure')
+
+
+# dummy rating
+Rating.find_or_create_by(anime_id:20, user_id:1, rating:3)

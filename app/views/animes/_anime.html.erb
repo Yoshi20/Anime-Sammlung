@@ -1,7 +1,7 @@
 <tr>
-  <td><%=link_to anime.name, anime%></td>
+  <td class=''><%=link_to anime.name, anime%></td>
 
-  <td><%= anime.genres.map(&:name).join(", ") %></td>
+  <td class=''><%= anime.genres.map(&:name).join(", ") %></td>
 
   <td class='text-center'><%= anime.episodes %></td>
 
@@ -11,11 +11,15 @@
     <td class='text-center'> <input type='checkbox' disabled='disabled'> </td>
   <% end %>
 
-  <td><%= anime.description %></td>
-  <td class='text-center'><%= anime.rating %></td>
+  <td class=''><%= anime.description %></td>
+
+  <td class='text-center'>
+    <%= anime.ratings.count.zero? ? anime.rating : anime.average_rating %>
+  </td>
 
   <td class='text-center'>
 
+    <% if user_signed_in? %>
       <%= form_for(anime) do |f| %>
         <%= f.radio_button :rating, 1 %> <%= label_tag :rating, '1' %>
         <%= f.radio_button :rating, 2 %> <%= label_tag :rating, '2' %> 
@@ -23,18 +27,17 @@
         <%= f.radio_button :rating, 4 %> <%= label_tag :rating, '4' %>
         <%= f.radio_button :rating, 5 %> <%= label_tag :rating, '5' %>
         <%= f.radio_button :rating, 6 %> <%= label_tag :rating, '6' %>
-        <%= f.submit 'Rate' %>
+
+      <td class='text-center'>
+        <%= f.submit 'Rate', class:'btn btn-primary btn-xs' %>
+        <%= link_to 'Edit', edit_anime_path(anime), class:'btn btn-default btn-xs' %>
+        <%= link_to 'Destroy', anime, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs' %>
+      </td>
+        
       <% end %>
 
+    <% end %>
+
   </td>
 
-  <td>
-    <%= link_to 'Rate', anime, class:'btn btn-primary btn-xs' %>
-
-
-    <% #if user_signed_in? %>
-      <%= link_to 'Edit', edit_anime_path(anime), class:'btn btn-default btn-xs' %>
-      <%= link_to 'Destroy', anime, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs' %>
-      <% #end %>
-  </td>
 </tr>
