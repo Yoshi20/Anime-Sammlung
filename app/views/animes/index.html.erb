@@ -45,7 +45,12 @@
       <th class='text-center'>Finished</th>
       <th>Description</th>
       <th class='text-center'><%= link_to 'Average Rating', animes_path(sort_params_for("rating", params)) %></th>
-      <th class='action'></th>
+
+      <% if user_signed_in? %>
+        <th class='text-center'>Your Rating</th>
+        <th class='action'></th>
+      <% end %>
+      
     </tr>
   </thead>
 
@@ -84,13 +89,12 @@
   </nav>
 
   <% if user_signed_in? %>
-
     <!-- Import Animes -->
     <div class='col-md-4 col-md-offset-1 col-xs-12'>
       <h2>Import Animes</h2>
       <%= form_tag import_animes_path, multipart:true do %>
         <%= file_field_tag :file %>
-        <%= submit_tag "Import", class:'btn btn-primary'%>
+        <%= submit_tag "Import", class:'btn btn-primary' %>
       <% end %>
     </div>
 

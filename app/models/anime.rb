@@ -1,6 +1,6 @@
 class Anime < ActiveRecord::Base
   has_and_belongs_to_many :genres
-  has_many :ratings
+  has_many :ratings, dependent: :destroy
 
   validates :name, :rating, presence: true
   validates :name, uniqueness:true, length:{maximum:50}
@@ -8,6 +8,11 @@ class Anime < ActiveRecord::Base
   validates :rating, inclusion: {in: 0..6}
 
   after_save :anime_changed_notification
+
+
+  # define max rating
+  MAX_RATING = 6
+
 
   # to add the name into the url
   def to_param
@@ -56,10 +61,19 @@ class Anime < ActiveRecord::Base
   end
 
 
+  # def get_rating_for(user)
+  #   ratings.find_by(user:user)
+  # end
+
   def average_rating
-    count = self.ratings.count
-    sum = self.ratings.map(&:rating).sum
-    sum / count
+    count = self.ratings.to_a.count
+    if count.zero?
+      nil
+    else
+      sum = self.ratings.map(&:rating).sum
+      avr = sum / count
+      avr.to_f.round(2)
+    end
   end
 
 

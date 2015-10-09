@@ -16,26 +16,30 @@
   <li class="active">Data</li>
 </ol> -->
 
-<div class='container'>
+<div class='container-fluid'>
 	<div class='row'>
 
 		<!-- navigator header -->
-		<div class='col-md-6 col-xs-12'>
+		<div class='col-md-4 col-xs-12'>
 			<ul class="nav nav-pills">
 			  <li role="presentation" class="<%= @section == 'animes' ? 'active' : 'inactive'%>"> <%= link_to 'Animes', animes_path %> </li>
 			  <li role="presentation" class="<%= @section == 'top10' ? 'active' : 'inactive'%>"> <%= link_to 'Top10', top10_path %> </li>
+
+			  <% if user_signed_in? %>
+			  	<li role="presentation" class="<%= @section == 'users' ? 'active' : 'inactive'%>"> <%= link_to 'Users', users_path %> </li>
+			  <% end %>
 			</ul>
 		</div>
 
 		<!-- login -->
 		<% if user_signed_in? %>
-			<div class='col-md-4 col-md-offset-2 col-xs-12'>
+			<div class='col-md-2 col-md-offset-5 col-xs-12'>
 				Signed in as: <b><%= current_user.email %></b>
 				<%= link_to 'Log Out', destroy_user_session_path, method: :delete, confirm:'Are you sure you want to log out?' %>
 			</div>
 		<% else %>
-		  <% unless devise_controller? %>
-				<div class='col-md-6 col-xs-12'>
+		  <% #unless devise_controller? %>
+				<div class='col-md-7 col-xs-12'>
 					<%= form_tag session_path(:user), class: "form-inline" %>
 					  <div class="form-group">
 					    <label class="sr-only" for="exampleInputEmail3">Email address</label>
@@ -51,27 +55,34 @@
 					    	<%= label_tag "user[remember_me]", "Remember me" %>
 					    </label>
 					  </div>
-					  <%= submit_tag "Sign in", class: "btn btn-success" %>
+					  <%= submit_tag "Sign in", class: "btn btn-success" %> or 
+					  <%= link_to "Sign up", new_user_registration_path,  class: "btn btn-primary" %> 
 					</form>
 				</div>
-			<% end %>
+			<% #end %>
 		<% end %>
-		
+
+		<div class='col-md-1 col-xs-12'>
+			<%= Time.now.to_formatted_s(:time) %>
+	  </div>
+
+
+	</div>
+
+	<!-- flash notifications and alerts -->
+	<div>
+		<%= render '/layouts/flashes' %>
 	</div>
 
 	<div class='row'>
 	
 		<!-- main content (index.html) -->
-		<div class='col-md-12 col-xs-12'> <%= yield %> </div>
+		<div class='col-md-12 col-xs-12'>
+			<%= yield %>
+		</div>
 
 	</div>
 </div>
-
-
-
-<p class="notice"><%= notice %></p>
-<p class="alert"><%= alert %></p>
-
 
 </body>
 

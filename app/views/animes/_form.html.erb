@@ -31,16 +31,14 @@
     <%= f.label :description %><br>
     <%= f.text_area :description %>
   </div>
-  <div class="field form-group">
-    <%= f.label :rating %><br>
-    <% if @anime.ratings.count.zero? %>
-      <%= f.number_field :rating, value:@anime.rating, min:1, max:6 %>
-    <% else %>
-      <%= f.number_field :rating, value:@anime.average_rating, min:1, max:6 %>
-    <% end %>
-  </div>
+  <% if @anime.new_record? %>
+    <div class="field form-group">
+      <%= f.label "Initial Rating" %><br>
+      <%= f.number_field :rating, value:@anime.rating, min:1, max:6, step:'any'%>
+    </div>
+  <% end %>
   <div class="actions form-group">
-    <%= f.submit %>
+    <%= f.submit class:'btn btn-primary' %>
   </div>
 
 <% end %>

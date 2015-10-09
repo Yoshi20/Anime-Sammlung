@@ -1,29 +1,34 @@
 <tr>
-  <td class=''><%=link_to anime.name, anime%></td>
+  <td class=''>
+    <% url = 'http://cdn.chia-anime.tv/content/cache2/' + anime.name.gsub(' ', '-') + '.jpg' %>
+    <%= image_tag url, width: 200, height: 250 %>
+  </td>
 
-  <td class=''><%= anime.genres.order(:name).map(&:name).join(", ") %></td>
+  <td style='vertical-align: middle'><%=link_to anime.name, anime%></td>
 
-  <td class='text-center'><%= anime.episodes %></td>
+  <td style='vertical-align: middle'><%= anime.genres.order(:name).map(&:name).join(", ") %></td>
+
+  <td class='text-center' style='vertical-align: middle'><%= anime.episodes %></td>
 
   <% if anime.finished %>
-    <td class='text-center'> <input type='checkbox' checked='true' disabled='true'> </td>
+    <td class='text-center' style='vertical-align: middle'> <input type='checkbox' checked='true' disabled='true'> </td>
   <% else %>
-    <td class='text-center'> <input type='checkbox' disabled='true'> </td>
+    <td class='text-center' style='vertical-align: middle'> <input type='checkbox' disabled='true'> </td>
   <% end %>
 
-  <td class=''><%= anime.description %></td>
+  <td style='vertical-align: middle'><%= anime.description %></td>
 
-  <td class='text-center'>
+  <td class='text-center' style='vertical-align: middle'>
     <%= anime.ratings.to_a.count.zero? ? anime.rating : anime.average_rating %>
   </td>
 
   <% if user_signed_in? %>
-    <td class='text-center'>
+    <td class='text-center' style='vertical-align: middle'>
       <%= current_user.get_rating_for(anime).nil? ? '-' : current_user.get_rating_for(anime).rating %>
     </td>
   <% end %>
   
-  <td class='text-center'>
+  <td class='text-center' style='vertical-align: middle'>
     <% if user_signed_in? %>
       <!-- update if already existing or create rating -->
       <%= form_for current_user.get_rating_for(anime) || anime.ratings.build do %>

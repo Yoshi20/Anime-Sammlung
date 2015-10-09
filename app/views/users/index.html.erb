@@ -1,16 +1,32 @@
-<div class="container">
-  <div class="row">
-    <h3>Users</h3>
-    <div class="column">
-      <table class="table">
-        <tbody>
-          <% @users.each do |user| %>
-            <tr>
-              <%= render user %>
-            </tr>
+<h1>Users</h1>
+
+<!-- users list -->
+<table class='table table-striped'>
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th class='text-center'>Sign in counter</th>
+      <th>Last Sign in at</th>
+      <th>Created at</th>
+      <th class='action'></th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <% User.all.each do |user| %>
+      <tr>
+        <td class=''><%= user.email %></td>
+        <td class='text-center'><%= user.sign_in_count %></td>
+        <td class=''><%= user.current_sign_in_at %></td>
+        <td class=''><%= user.created_at %></td>
+        <td class='text-center' style='vertical-align: middle'>
+          <% if current_user == User.first %> <!-- blup (admin = first) -->
+            <%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs' %>
           <% end %>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
+        </td>
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>

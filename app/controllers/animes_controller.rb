@@ -1,8 +1,9 @@
 class AnimesController < ApplicationController
   before_action :set_anime, only: [:show, :edit, :update, :destroy]
-  before_action :get_genres, only: [:index, :new, :edit]
+  before_action :get_genres, only: [:index, :new, :edit, :create]
   before_action :authenticate_user!, only: [:create, :update, :destroy]
   before_action { @section = 'animes' }
+
   
   # GET /animes
   # GET /animes.json
@@ -14,7 +15,7 @@ class AnimesController < ApplicationController
     elsif params[:order_by_letter].present?
       @animes = Anime.where('name LIKE ?', "#{params[:order_by_letter]}%")
     else
-      @animes = Anime.includes(:genres).all
+      @animes = Anime.includes(:genres, :ratings).all
       @animes = if params[:sort].present?
         @animes.order(params[:sort].to_s)
       else
@@ -70,15 +71,6 @@ class AnimesController < ApplicationController
   # PATCH/PUT /animes/1
   # PATCH/PUT /animes/1.json
   def update
-
-    # update rating
-    if params[:anime].present?
-      anime = Anime.find(params[:id])
-      new_rating = params[:anime][:rating]
-      current_user.set_rating_for(anime, new_rating.to_i)
-    end
-    
-    # update anime
     respond_to do |format|
       if @anime.update(anime_params)
         format.html { redirect_to @anime, notice: 'Anime was successfully updated.' }

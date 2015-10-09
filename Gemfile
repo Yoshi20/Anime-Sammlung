@@ -54,8 +54,10 @@ end
 #https://github.com/twbs/bootstrap-sass
 gem 'bootstrap-sass', '~> 3.3.5'
 
+#
 gem 'bcrypt'
 
+#
 gem 'will_paginate'
 
 # See https://github.com/plataformatec/devise

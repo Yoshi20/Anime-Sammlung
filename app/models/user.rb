@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  has_many :ratings
+  has_many :ratings, dependent: :destroy
 
 
   # Include default devise modules. Others available are:
@@ -26,14 +26,10 @@ class User < ActiveRecord::Base
 	# end
 
 
-  def get_rating_for(anime)
-    ratings.find_by(anime:anime)
-  end
 
-  def set_rating_for(anime, new_rating)
-    r = Rating.find_or_create_by({anime:anime, user:self}) # get or create a rating
-    r.rating = new_rating  # set new rating
-    r.save
+  def get_rating_for(anime)
+    @_all_ratings ||= ratings.to_a
+    @_all_ratings.select{|r| r.anime == anime}.first
   end
 
 end

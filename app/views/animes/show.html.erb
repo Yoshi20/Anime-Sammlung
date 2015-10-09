@@ -1,36 +1,50 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @anime.name %>
-</p>
+<div class='col-md-3 col-xs-12'>
+  <div>
+    <% url = 'http://cdn.chia-anime.tv/content/cache2/' + @anime.name.gsub(' ', '-') + '.jpg' %>
+    <%= image_tag url, width: 250 %>
+  </div>
 
-<p>
-  <strong>Genre:</strong>
-  <% @anime.genres.each do |genre| %>
-  <%= genre.name %>
-  <% end %>
-</p>
+  <div>
+    <%= link_to 'Animes', animes_path %> |
+    <%= link_to 'Edit', edit_anime_path(@anime) %> |
+    <%= link_to 'Back', :back %>
+  </div>
+</div>
 
-<p>
-  <strong>Episodes:</strong>
-  <%= @anime.episodes %>
-</p>
+<div class='col-md-9 col-xs-12'>
+  <h2>
+    <strong><%= @anime.name %></strong>
+  </h2>
 
-<p>
-  <strong>Finished:</strong>
-  <%= @anime.finished %>
-</p>
+  <p>
+    <strong>Genre:</strong>
+    <%= @anime.genres.map(&:name).join(', ') %>
+  </p>
 
-<p>
-  <strong>Description:</strong>
-  <%= @anime.description %>
-</p>
+  <p>
+    <strong>Episodes:</strong>
+    <%= @anime.episodes %>
+  </p>
 
-<p>
-  <strong>Rating:</strong>
-  <%= @anime.rating %>
-</p>
+  <p>
+    <strong>Finished:</strong>
+    <% if @anime.finished %>
+      <input type='checkbox' checked='true' disabled='true'>
+    <% else %>
+      <input type='checkbox' disabled='true'>
+    <% end %>
+  </p>
 
-<%= link_to 'Edit', edit_anime_path(@anime), class:'btn btn-default btn-xs' %> |
-<%= link_to 'Back', animes_path, class:'btn btn-default btn-xs' %>
+  <p>
+    <strong>Description:</strong>
+    <%= @anime.description %>
+  </p>
+
+  <p>
+    <strong>Average Rating:</strong>
+    <%= @anime.ratings.to_a.count.zero? ? '-' : @anime.average_rating %>
+  </p>
+
+</div>
