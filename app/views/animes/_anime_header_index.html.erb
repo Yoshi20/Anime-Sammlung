@@ -1,0 +1,22 @@
+<tr>
+  <th><%= link_to 'Name', animes_path(sort_params_for("name", params)) %></th>
+  <th>
+    <div class='genre-select'>
+      Genres
+      <%= form_tag animes_path, method:'get' do %>
+        <%= select_tag(:genre_id, options_from_collection_for_select(@genres, 'id', 'name', params[:genre_id])) %>
+        <%= submit_tag "Sort" %>
+      <% end %>
+     </div>
+  </th>
+  <th class='text-center'><%= link_to 'Episodes', animes_path(sort_params_for("episodes", params)) %></th>
+  <th class='text-center'>Finished</th>
+  <th>Description</th>
+  <th class='text-center'><%= link_to 'Average Rating', animes_path(sort_params_for("rating", params)) %></th>
+
+  <% if user_signed_in? %>
+    <th class='text-center'>Your Rating</th>
+    <th class='action'></th>
+  <% end %>
+
+</tr>
