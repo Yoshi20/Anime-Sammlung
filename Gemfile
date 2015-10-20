@@ -63,3 +63,5 @@ gem 'will_paginate'
 # See https://github.com/plataformatec/devise
 gem 'devise'
 
+# See https://github.com/kossnocorp/jquery.turbolinks
+gem 'jquery-turbolinks'

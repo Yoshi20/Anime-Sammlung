@@ -35,23 +35,7 @@
 <!-- anime list -->
 <table class='table table-striped'>
   <thead>
-    <tr>
-      <th><%= link_to 'Name', animes_path(sort_params_for("name", params)) %></th>
-      <th>
-        <%= link_to 'Genres', animes_path %>
-        <%= select(:genre_ids, @genres, @genres.collect {|g| g.name}) %>
-      </th>
-      <th class='text-center'><%= link_to 'Episodes', animes_path(sort_params_for("episodes", params)) %></th>
-      <th class='text-center'>Finished</th>
-      <th>Description</th>
-      <th class='text-center'><%= link_to 'Average Rating', animes_path(sort_params_for("rating", params)) %></th>
-
-      <% if user_signed_in? %>
-        <th class='text-center'>Your Rating</th>
-        <th class='action'></th>
-      <% end %>
-      
-    </tr>
+    <%= render "anime_header_index" %>
   </thead>
 
   <tbody>
