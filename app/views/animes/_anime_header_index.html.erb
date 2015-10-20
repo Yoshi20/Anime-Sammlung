@@ -4,7 +4,7 @@
     <div class='genre-select'>
       <%= form_tag animes_path, method:'get' do %>
         <%= label_tag 'Genres' %>
-        <%= select_tag(:genre_id, options_from_collection_for_select(@genres, 'id', 'name', params[:genre_id])) %>
+        <%= select_tag(:genre_id, options_from_collection_for_select(@genres, 'id', 'name', params[:genre_id]), data: {url: animes_path}) %>
         <%= submit_tag "Sort" %>
       <% end %>
      </div>

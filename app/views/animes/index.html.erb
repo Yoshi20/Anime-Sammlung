@@ -1,8 +1,8 @@
-<h1>Anime-List</h1>
+<div class='title-div'>
+  <h1>Anime-List</h1>
 
-<div>
   <!-- Letter list -->
-  <div class='col-md-5 col-xs-12'>
+  <div class='letter-list col-md-5 col-xs-12'>
     <%= link_to animes_path do %>
       <% if params[:order_by_letter].present? %>
         Alle
@@ -23,22 +23,22 @@
   </div>
 
   <!-- search form -->
-  <%= form_tag animes_path, method:'get' do %>
-    <div class='col-md-3 col-md-offset-4 col-xs-12'>
+  <div class='search-form col-md-3 col-md-offset-4 col-xs-12'>
+    <%= form_tag animes_path, method:'get' do %>
       <%= text_field_tag :search, params[:search] %>
       <%= submit_tag "Search", name:nil %>
-    </div>
-<% end %>
+    <% end %>
+  </div>
 
 </div>
 
 <!-- anime list -->
 <table class='table table-striped'>
-  <thead>
+  <thead class='anime-list-header'>
     <%= render "anime_header_index" %>
   </thead>
 
-  <tbody>
+  <tbody class='anime-list'>
     <%= render @animes %>
   </tbody>
 </table>
@@ -74,7 +74,7 @@
 
   <% if user_signed_in? %>
     <!-- Import Animes -->
-    <div class='col-md-4 col-md-offset-1 col-xs-12'>
+    <div class='import-animes col-md-4 col-md-offset-1 col-xs-12'>
       <h2>Import Animes</h2>
       <%= form_tag import_animes_path, multipart:true do %>
         <%= file_field_tag :file %>
@@ -83,7 +83,7 @@
     </div>
 
     <!-- 'Add Anime' button -->
-    <div class='col-md-1 col-md-offset-0 col-xs-12'>
+    <div class='add-anime-button col-md-1 col-md-offset-0 col-xs-12'>
       <%= link_to 'Add Anime', new_anime_path, class:'btn btn-primary' %>
     </div>
 
@@ -92,7 +92,7 @@
 </div>
 
 <!-- random picture -->
-<div class='col-md-1 col-md-offset-11 col-xs-12'>
+<div class='myPicture col-md-1 col-md-offset-11 col-xs-12'>
   <%= link_to animes_path do %>
     <%= image_tag 'rainbow.png' %>
   <% end %>
