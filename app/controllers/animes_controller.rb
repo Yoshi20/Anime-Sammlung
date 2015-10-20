@@ -12,11 +12,11 @@ class AnimesController < ApplicationController
     # handle parameters to sort and order
     if params[:genre_id].present?
       @animes = Genre.find(params[:genre_id]).animes
-      flash[:alert] = "There are no Animes with this Genre" if @animes.empty?
+      flash.now[:alert] = "There are no Animes with the genre #{@genres.find(params[:genre_id]).name}" if @animes.empty?
 
     elsif params[:order_by_letter].present?
       @animes = Anime.where('name LIKE ?', "#{params[:order_by_letter]}%")
-      flash[:alert] = "There are no Animes that begin with the letter #{params[:order_by_letter]}" if @animes.empty?
+      flash.now[:alert] = "There are no Animes that begin with the letter #{params[:order_by_letter]}" if @animes.empty?
     else
       @animes = Anime.includes(:genres, :ratings).all
       @animes = if params[:sort].present?

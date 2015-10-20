@@ -1,4 +1,10 @@
-.genre-select form {
-  display: inline-block;
-  margin-left: 10px;
+.genre-select label {
+  float: left;
+  margin-right: 10px;
+  margin-bottom: 0;
+
+  &:after{
+    content: "";
+    clear: both;
+  }
 }
