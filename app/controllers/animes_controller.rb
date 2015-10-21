@@ -34,7 +34,7 @@ class AnimesController < ApplicationController
     @animes = @animes.limit(params[:limit]) if params[:limit].present?
 
     # paginate animes (have to be called last)
-    @animes = @animes.paginate(page: params[:page], per_page: get_number_of_items_per_page)
+    @animes = @animes.paginate(page: params[:page], per_page: get_number_of_items_per_page) unless params[:genre_id].present?
 
     # handle ajax request
     respond_to do |format|

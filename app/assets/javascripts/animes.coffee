@@ -15,6 +15,7 @@ $ ->
       success: (response) ->
         console.log("success")
         $('.anime-list').html(response)
+        $('.pagination').hide()
         
 # Hide submit button
   $('.genre-select form input[type=submit]').hide()
