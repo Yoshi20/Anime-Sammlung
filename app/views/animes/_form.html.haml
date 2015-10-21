@@ -1,0 +1,36 @@
+= form_for(@anime) do |f|
+  - if @anime.errors.present?
+    #error_explanation
+      %h2= pluralize(@anime.errors.count, "error") + " prohibited this anime from being saved:"
+
+      %ul
+        - @anime.errors.full_messages.each do |message|
+        %li= message
+
+  .field.form-group
+    = f.label :name <br>
+    = f.text_field :name
+  
+  .field.form-group
+    = f.label :genres <br>
+    = f.collection_select :genre_ids, @genres, :id, :name, {}, {class:'selectpicker', multiple:true} 
+  
+  field.form-group
+    = f.label :episodes <br>
+    = f.number_field :episodes, value:@anime.episodes, size:10
+  
+  %div
+    = f.label :finished <br>
+    = f.check_box :finished, value:@anime.finished
+  
+  .field.form-group
+    = f.label :description <br>
+    = f.text_area :description
+  
+  - if @anime.new_record?
+    .field.form-group
+      = f.label "Initial Rating" <br>
+      = f.number_field :rating, value:@anime.rating, min:1, max:6, step:'any'
+  
+  .actions.form-group
+    = f.submit class:'btn btn-primary'

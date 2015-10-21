@@ -65,3 +65,6 @@ gem 'devise'
 
 # See https://github.com/kossnocorp/jquery.turbolinks
 gem 'jquery-turbolinks'
+
+# See http://haml.info
+gem 'haml-rails'

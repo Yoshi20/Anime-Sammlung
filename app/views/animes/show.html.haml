@@ -1,0 +1,38 @@
+%p#notice= notice
+
+%div.col-md-3.col-xs-12
+  %div
+    - url = 'http://cdn.chia-anime.tv/content/cache2/' + @anime.name.gsub(' ', '-') + '.jpg'
+    = image_tag url, width: 250
+  
+  %div
+    = link_to 'Animes', animes_path |
+    = link_to 'Edit', edit_anime_path(@anime) |
+    = link_to 'Back', :back
+
+%div.col-md-9.col-xs-12
+  %h2
+    %strong= @anime.name
+
+  %p
+    %strong Genre:
+    = @anime.genres.map(&:name).join(', ')
+ 
+  %p
+    %strong Episodes:
+    = @anime.episodes
+
+  %p
+    %strong Finished:
+    - if @anime.finished
+      %input{type: 'checkbox', checked: 'true', disabled: 'true'}
+    - else
+      %input{type: 'checkbox', disabled: 'true'}
+
+  %p
+    %strong Description:
+    = @anime.description
+
+  %p
+    %strong Average Rating:
+    = @anime.ratings.to_a.count.zero? ? '-' : @anime.average_rating

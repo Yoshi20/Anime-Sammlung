@@ -1,0 +1,17 @@
+%tr
+  %th= link_to 'Name', animes_path(sort_params_for("name", params))
+  %th
+    .genre-select
+      = form_tag animes_path, method:'get' do
+        = label_tag 'Genres'
+        = select_tag(:genre_id, options_from_collection_for_select(@genres, 'id', 'name', params[:genre_id]), data: {url: animes_path})
+        = submit_tag "Sort"
+
+  %th.text-center= link_to 'Episodes', animes_path(sort_params_for("episodes", params))
+  %th.text-center Finished
+  %th Description
+  %th.text-center= link_to 'Average Rating', animes_path(sort_params_for("rating", params))
+
+  - if user_signed_in?
+    %th.text-center Your Rating
+    %th.action
