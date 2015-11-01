@@ -38,10 +38,10 @@
         - if @animes.current_page > 1
           -# tabl_params is a helper methode to whitelist the needed params to sort and order
           = link_to animes_path(table_params.merge(page: @animes.current_page-1)), aria: {label: "Previous"} do
-            %span{"aria-hidden": "true"}
+            %span{"aria-hidden" => "true"}
               &laquo;
         - else
-          %span{"aria-hidden": "true"}
+          %span{"aria-hidden" => "true"}
             &laquo;
       
       - (1..@animes.total_pages).each do |x|
@@ -50,10 +50,10 @@
       %li
         - if @animes.current_page < @animes.total_pages
           = link_to animes_path(table_params.merge(page: @animes.current_page+1)), aria: {label: "Next"} do
-            %span{"aria-hidden": "true"}
+            %span{"aria-hidden" => "true"}
               &raquo;
         - else
-          %span{"aria-hidden": "true"}
+          %span{"aria-hidden" => "true"}
             &raquo;
 
   - if user_signed_in?

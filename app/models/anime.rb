@@ -5,6 +5,7 @@ class Anime < ActiveRecord::Base
   validates :name, :rating, presence: true
   validates :name, uniqueness:true, length:{maximum:50}
   validates :episodes, length:{minimum:1}
+  validates :episodes, numericality: {greater_than: 0}
   validates :rating, inclusion: {in: 0..6}
 
   after_save :anime_changed_notification
