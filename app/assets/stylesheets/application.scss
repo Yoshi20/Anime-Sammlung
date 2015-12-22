@@ -15,9 +15,12 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
-
 @import "animes";
 
+th.action {
+  width: 110px;
+}
 
-
-th.action { width: 110px; }
+.btn-default {
+  background-color: #e8e8e8;
+}

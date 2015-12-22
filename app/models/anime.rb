@@ -9,16 +9,13 @@ class Anime < ActiveRecord::Base
 
   after_save :anime_changed_notification
 
-
   # define max rating
   MAX_RATING = 6
-
 
   # to add the name into the url
   def to_param
     "#{id} #{name}".parameterize
   end
-
 
   def self.search(search)
     if search
@@ -27,7 +24,6 @@ class Anime < ActiveRecord::Base
       :all
     end
   end
-
 
   def self.import(file)
     #raise Anime.first.inspect
@@ -55,11 +51,9 @@ class Anime < ActiveRecord::Base
     warnings
   end
 
-
   def anime_changed_notification
     #UserMailer.anime_changed(self).deliver if changed?
   end
-
 
   # def get_rating_for(user)
   #   ratings.find_by(user:user)

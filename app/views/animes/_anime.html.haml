@@ -5,12 +5,8 @@
 
   %td.text-center= anime.episodes
 
-  - if anime.finished
-    %td.text-center
-      %input{type: 'checkbox', checked:'true', disabled:'true'}
-  -else
-    %td.text-center
-      %input{type: 'checkbox', disabled: 'true'}  
+  %td.text-center
+    = check_box_tag '', '', anime.finished?, disabled: true
 
   %td= anime.description
 

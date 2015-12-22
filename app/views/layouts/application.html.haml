@@ -2,66 +2,26 @@
 %html
   %head
     %title Anime-List
-    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
 
   %body
-    -# %ol.breadcrumb
-    -#   %li <a href="#">Home</a>
-    -#   %li <a href="#">Library</a>
-    -#   %li <a href="active">Data</a>
-
-    .container-fluid
-      .row
+    .wrapper.fixed-width
+      .row.col-md-12
         -# navigator header
-        .col-md-4.col-xs-12
-          %ul.nav.nav-pills
-            %li{role: "presentation", class: "#{@section == 'animes' ? 'active' : 'inactive'}"}
-              = link_to 'Animes', animes_path
-            %li{role: "presentation", class: "#{@section == 'top10' ? 'active' : 'inactive'}"}
-              = link_to 'Top10', top10_path
+        .col-md-4
+          = render '/layouts/navigation'
 
-            - if user_signed_in?
-              %li{role: "presentation", class: (@section == 'users' ? 'active' : 'inactive')}
-                = link_to 'Users', users_path
-
-        -# login
-        - if user_signed_in?
-          .col-md-2.col-md-offset-5.col-xs-12
-            %p
-              Signed in as: 
-              %b= current_user.email
-            = link_to 'Log Out', destroy_user_session_path, method: :delete, confirm:'Are you sure you want to log out?'
-        - else
-          -# unless devise_controller?
-          .col-md-7.col-xs-12
-            = form_tag session_path(:user), class: "form-inline" do
-              .form-group
-                %label.sr-only{for: "exampleInputEmail3"}Email address
-                = email_field_tag "user[email]", "", class: "form-control", placeholder: "Email"
-              
-              .form-group
-                %label.sr-only{for: "exampleInputPassword3"}Password
-                = password_field_tag "user[password]", "", class: "form-control", placeholder: "Password"
-              
-              .checkbox
-                %label
-                  = check_box_tag "user[remember_me]"
-                  = label_tag "user[remember_me]", "Remember me"
-              
-              = submit_tag "Sign in", class: "btn btn-success"
-              or 
-              = link_to "Sign up", new_user_registration_path,  class: "btn btn-primary" 
-
-        -# clock
-        .clock-div.col-md-1.col-xs-12
-          %label.clock= Time.now.to_formatted_s(:time)
+        -# login header
+        .col-md-8.pull-right
+          = render '/layouts/login'
 
       -# flash notifications and alerts
-      %div= render '/layouts/flashes'
+      .row.col-md-12.fixed-width
+        = render '/layouts/flashes'
 
-      %div.row
-        -# main content (index.html)
-        .col-md-12.col-xs-12
+      -# main content (index.html)
+      .container.content-wrapper
+        .row.content
           = yield

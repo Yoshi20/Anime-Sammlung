@@ -4,41 +4,66 @@ class AnimesController < ApplicationController
   before_action :authenticate_user!, only: [:create, :update, :destroy]
   before_action { @section = 'animes' }
 
-  
   # GET /animes
   # GET /animes.json
   def index
+    # get animes
+    @animes = Anime.includes(:genres, :ratings).all
 
-    # handle parameters to sort and order
-    if params[:genre_id].present?
-      @animes = Genre.find(params[:genre_id]).animes
-      flash.now[:alert] = "There are no Animes with the genre #{@genres.find(params[:genre_id]).name}" if @animes.empty?
+    puts ''
+    puts 'Params:'
+    puts params.inspect
+    puts ''
 
-    elsif params[:order_by_letter].present?
-      @animes = Anime.where('name LIKE ?', "#{params[:order_by_letter]}%")
-      flash.now[:alert] = "There are no Animes that begin with the letter #{params[:order_by_letter]}" if @animes.empty?
+    if @animes.empty?
+      flash.now[:alert] = "There are no Animes to list."
     else
-      @animes = Anime.includes(:genres, :ratings).all
-      @animes = if params[:sort].present?
-        @animes.order(params[:sort].to_s)
-      else
-        @animes.order(:name)
+      # handle search (self written method)
+      if params[:search].present?
+        @animes = @animes.search(params[:search])
       end
-      @animes = @animes.reverse_order if params[:order] == "desc"
+
+      # handle params to limit selected animes
+      if params[:order_by_letter].present?
+        @animes = @animes.where('animes.name LIKE ?', "#{params[:order_by_letter]}%")
+        if @animes.empty?
+          flash.now[:alert] = "There are no Animes that begin with the letter #{params[:order_by_letter]}"
+        end
+      end
+
+      if params[:genre_id].present?
+        @animes = @animes.joins(:genres).where(genres: {id: params[:genre_id].to_i})
+        if @animes.empty?
+          flash.now[:alert] = "There are no Animes with the genre #{@genres.find(params[:genre_id]).name}."
+        end
+      end
+
+      # handle parameters to sort and order
+      if params[:sort].present?
+        @animes = @animes.order(params[:sort].to_s)
+      else
+        @animes = @animes.order('animes.name')
+      end
+
+      if params[:order] == "desc"
+        @animes = @animes.reverse_order
+      end
+
+      # paginate animes (have to be called last)
+      @animes = @animes.paginate(page: params[:page], per_page: get_number_of_items_per_page)
     end
-
-    # handle search (self written methode)
-    @animes = @animes.search(params[:search]) if params[:search].present?
-
-    # handle limit parameter
-    @animes = @animes.limit(params[:limit]) if params[:limit].present?
-
-    # paginate animes (have to be called last)
-    @animes = @animes.paginate(page: params[:page], per_page: get_number_of_items_per_page) unless params[:genre_id].present?
 
     # handle ajax request
     respond_to do |format|
-      format.js { render @animes }  # to render the anime partial
+      format.json {
+        animes_html = render_to_string(partial: @animes, formats: [:html], locals: {animes: @animes}).html_safe
+        pagination_html = render_to_string(partial: 'paginator', formats: [:html], locals: {animes: @animes}).html_safe
+        render json: {
+          status: 'success',
+          animes: animes_html,
+          pagination: pagination_html,
+        }, status: :ok
+      }
       format.html
     end
 
@@ -53,7 +78,6 @@ class AnimesController < ApplicationController
   # GET /animes/new
   def new
     @anime = Anime.new
-
   end
 
   # GET /animes/1/edit
@@ -101,15 +125,11 @@ class AnimesController < ApplicationController
     end
   end
 
-
-
   # import /animes/import
   def import
     Anime.import(params[:file])
     redirect_to root_url, notice: "Animes imported"
   end
-
-
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -123,6 +143,6 @@ class AnimesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def anime_params
-      params.require(:anime).permit(:name, :episodes, :finished, :description, :rating, { genre_ids: []})
+      params.require(:anime).permit(:name, :episodes, :finished, :rating, { genre_ids: []})
     end
 end
