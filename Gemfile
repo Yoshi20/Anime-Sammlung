@@ -68,3 +68,6 @@ gem 'jquery-turbolinks'
 
 # See http://haml.info
 gem 'haml-rails'
+
+# On Windows: https://github.com/tzinfo/tzinfo/wiki/Resolving-TZInfo::DataSourceNotFound-Errors
+#gem 'tzinfo-data'

@@ -6,8 +6,10 @@
     = image_tag url, width: 250
   
   %div
-    = link_to 'Animes', animes_path |
-    = link_to 'Edit', edit_anime_path(@anime) |
+    = link_to 'Animes', animes_path
+    |
+    = link_to 'Edit', edit_anime_path(@anime)
+    |
     = link_to 'Back', :back
 
 %div.col-md-9.col-xs-12
