@@ -4,14 +4,14 @@
   .table-nav.col-md-12
     -# Letter list
     .letter-list.col-md-6
-      = link_to animes_path(table_params.merge(order_by_letter: nil)) do
+      = link_to animes_path do
         - if params[:order_by_letter].present?
           Alle
         - else
           %u Alle
 
       - ('A'.. 'Z').each do |letter|
-        = link_to animes_path(table_params.merge(order_by_letter: letter)), class: 'letter' do
+        = link_to animes_path(order_by_letter: letter), class: 'letter' do
           - if letter == params[:order_by_letter]
             %u= letter
           - else
@@ -28,7 +28,7 @@
 .anime-list-with-paginator
 %table.table.table-striped
   %thead.anime-list-header
-    = render "anime_header_index"
+    = render "anime_list_header"
 
   %tbody.anime-list
     = render @animes

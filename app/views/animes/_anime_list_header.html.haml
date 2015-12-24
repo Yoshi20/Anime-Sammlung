@@ -1,0 +1,17 @@
+%tr
+  %th= link_to 'Name', animes_path(table_params.merge(sort: 'name')), data: {order: 'asc'}
+  %th
+    .genre-select
+      = form_tag animes_path, method:'get' do
+        = link_to 'Genres', animes_path(table_params.merge(sort: 'genres')), data: {order: 'asc'}
+        = select_tag :genre_id, options_from_collection_for_select(@genres, 'id', 'name', params[:genre_id])
+        = submit_tag "Sort"
+
+  %th.text-center= link_to 'Episodes', animes_path(table_params.merge(sort: 'episodes')), data: {order: 'asc'}
+  %th.text-center Finished
+  %th Description
+  %th.text-center= link_to 'Average Rating', animes_path(table_params.merge(sort: 'rating')), data: {order: 'asc'}
+
+  - if user_signed_in?
+    %th.text-center Your Rating
+    %th.action

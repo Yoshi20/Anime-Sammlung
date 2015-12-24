@@ -7,13 +7,13 @@ class AnimesController < ApplicationController
   # GET /animes
   # GET /animes.json
   def index
-    # get animes
-    @animes = Anime.includes(:genres, :ratings).all
-
     puts ''
     puts 'Params:'
     puts params.inspect
     puts ''
+
+    # get animes
+    @animes = Anime.includes(:genres, :ratings).all
 
     if @animes.empty?
       flash.now[:alert] = "There are no Animes to list."
@@ -27,20 +27,24 @@ class AnimesController < ApplicationController
       if params[:order_by_letter].present?
         @animes = @animes.where('animes.name LIKE ?', "#{params[:order_by_letter]}%")
         if @animes.empty?
-          flash.now[:alert] = "There are no Animes that begin with the letter #{params[:order_by_letter]}"
+          flash.now[:alert] = "There are no Animes that begin with the letter '#{params[:order_by_letter]}'"
         end
       end
 
       if params[:genre_id].present?
         @animes = @animes.joins(:genres).where(genres: {id: params[:genre_id].to_i})
         if @animes.empty?
-          flash.now[:alert] = "There are no Animes with the genre #{@genres.find(params[:genre_id]).name}."
+          flash.now[:alert] = "There are no Animes with the genre '#{Genre.find(params[:genre_id].to_i).name}'"
         end
       end
 
       # handle parameters to sort and order
       if params[:sort].present?
-        @animes = @animes.order(params[:sort].to_s)
+        if params[:sort] == 'genres'
+          @animes = @animes.joins(:genres).merge(Genre.order("genres.name"))
+        else
+          @animes = @animes.order("animes.#{params[:sort]}")
+        end
       else
         @animes = @animes.order('animes.name')
       end
@@ -56,12 +60,10 @@ class AnimesController < ApplicationController
     # handle ajax request
     respond_to do |format|
       format.json {
-        animes_html = render_to_string(partial: @animes, formats: [:html], locals: {animes: @animes}).html_safe
-        pagination_html = render_to_string(partial: 'paginator', formats: [:html], locals: {animes: @animes}).html_safe
+        animes_html = render_to_string(partial: @animes, formats: [:html]).html_safe
         render json: {
           status: 'success',
           animes: animes_html,
-          pagination: pagination_html,
         }, status: :ok
       }
       format.html
@@ -72,8 +74,8 @@ class AnimesController < ApplicationController
   # GET /animes/1
   # GET /animes/1.json
   def show
-    puts params
-  end  # renders app/views/animes/show.html.erb automatically
+
+  end
 
   # GET /animes/new
   def new

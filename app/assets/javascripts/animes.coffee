@@ -1,28 +1,27 @@
 $ ->
-# Genre selection -> ajax request (include the Turbolink gem to fix a bug)
-  $('.genre-select').on 'change', 'select', (e) ->
-    form = $(this)
-    url = form.data("url")
-    data = form.serialize() + '&' + getUrlParameters()
-
+  # click on a column-header anchortag to sort and order the list -> ajax request
+  $('.anime-list-header').on 'click', 'a', (e) ->
+    e.preventDefault()
+    url = $(this).attr('href')
+    order = $(this).data('order')
+    if order == 'asc'
+      newOrder = 'desc'
+    else
+      newOrder = 'asc'
+    $(this).data('order', newOrder)
+    data = {order: newOrder}
     getAnimesAjaxRequest(url, data)
-        
-  # Hide submit button
+
+  # handle genre selection
+  $('.anime-list-header').on 'change', '.genre-select select', (e) ->
+    form = $(this).closest('form')
+    form.submit()
+
+  # hide genre selection submit button
   $('.genre-select form input[type=submit]').hide()
 
-  # Adds a blank selection to the genre selection (first selection)
+  # adds a blank selection to the genre selection (first selection)
   $('.genre-select select').prop 'selectedIndex', -1 if urlParamExists("genre_id") is -1
-
-# Order by letter -> ajax request
-  $('.letter-list').on 'click', '.letter', (e) ->
-    e.preventDefault()
-
-    href = $(this).attr('href')
-    url = href.split('?')[0]
-    param = href.split('?')[1]
-    data = param + '&' + getUrlParameters()
-
-    getAnimesAjaxRequest(url, data)
 
 # function to check if an url param exists
 # (it returns its index or -1 if it doesn't exists)
@@ -37,33 +36,11 @@ getUrlParameters = ->
 getAnimesAjaxRequest = (url, data) ->
   $.ajax
     type: 'get'
-    url: url + '.json'
+    url: url
     data: data
     dataType: 'json'  # text, xml, html, script, json, jsonp
     error: ->
-      console.log("error")
+      console.log("error: get animes ajax request")
     success: (response) ->
-      console.log("success")
+      console.log("success: get animes ajax request")
       $('.anime-list').html(response.animes)
-      $('.pagination').html(response.pagination)
-
-
-# Clock-Updater (every 60s or by a refresh)
-# $ ->
-#   window.setInterval(clockFunction, 60000)
-
-# clockFunction = ->
-#   time = new Date()
-#   h = time.getHours()
-#   h = if (h < 10) then "0"+h else h
-#   m = time.getMinutes()
-#   m = if (m < 10) then "0"+m else m
-
-#   $('.clock').text(h+':'+m)
-#   console.log "time updated -> #{h}:#{m}"
-
-
-# $ ->
-  # $('.myPicture').on 'click', (e) ->
-  #   e.preventDefault()
-  #   getUrlParameters()
