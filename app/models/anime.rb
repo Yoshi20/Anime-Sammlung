@@ -1,5 +1,6 @@
 class Anime < ActiveRecord::Base
   has_and_belongs_to_many :genres
+  belongs_to :user
   has_many :ratings, dependent: :destroy
 
   validates :name, :rating, presence: true
@@ -70,6 +71,5 @@ class Anime < ActiveRecord::Base
       avr.to_f.round(2)
     end
   end
-
 
 end

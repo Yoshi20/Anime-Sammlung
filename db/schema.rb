@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151006140449) do
+ActiveRecord::Schema.define(version: 20151224155258) do
 
   create_table "animes", force: :cascade do |t|
     t.string   "name"
@@ -21,7 +21,10 @@ ActiveRecord::Schema.define(version: 20151006140449) do
     t.float    "rating"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.integer  "user_id"
   end
+
+  add_index "animes", ["user_id"], name: "index_animes_on_user_id"
 
   create_table "animes_genres", id: false, force: :cascade do |t|
     t.integer "anime_id"

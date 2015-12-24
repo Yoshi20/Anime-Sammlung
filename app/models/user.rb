@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
+  has_many :animes
   has_many :ratings, dependent: :destroy
-
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
