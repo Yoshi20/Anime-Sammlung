@@ -17,10 +17,30 @@
 
 @import "animes";
 
+body {
+  background-color: #FFFFFF;
+}
+
 th.action {
   width: 110px;
 }
 
 .btn-default {
   background-color: #e8e8e8;
+}
+
+.login {
+  margin-right: 20px;
+}
+
+.pagination {
+  margin: 0 0 20px 0;
+}
+
+.mirrored {
+  -moz-transform: scale(-1, 1);
+  -webkit-transform: scale(-1, 1);
+  -o-transform: scale(-1, 1);
+  -ms-transform: scale(-1, 1);
+  transform: scale(-1, 1);
 }

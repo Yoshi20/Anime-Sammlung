@@ -1,8 +1,8 @@
 .navigation-header
   %ul.nav.nav-pills
-    %li{role: "presentation", class: "#{@section == 'animes' ? 'active' : 'inactive'}"}
+    %li{role: "presentation", class: (@section == 'animes' ? 'active' : 'inactive')}
       = link_to 'Animes', animes_path
-    %li{role: "presentation", class: "#{@section == 'top10' ? 'active' : 'inactive'}"}
+    %li{role: "presentation", class: (@section == 'top10' ? 'active' : 'inactive')}
       = link_to 'Top10', top10_path
 
     - if user_signed_in?
