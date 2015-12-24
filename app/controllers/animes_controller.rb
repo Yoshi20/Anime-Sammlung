@@ -61,9 +61,12 @@ class AnimesController < ApplicationController
     respond_to do |format|
       format.json {
         animes_html = render_to_string(partial: @animes, formats: [:html]).html_safe
+        url_params = ""
+        table_params.each{|k,v| url_params << "#{k}=#{v}&"}
         render json: {
           status: 'success',
           animes: animes_html,
+          params: url_params[0..-2] # to cut off the last '&'
         }, status: :ok
       }
       format.html
@@ -146,5 +149,9 @@ class AnimesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def anime_params
       params.require(:anime).permit(:name, :episodes, :finished, :rating, { genre_ids: []})
+    end
+
+    def table_params
+      params.permit(:page, :sort, :order, :order_by_letter, :genre_id, :search)
     end
 end

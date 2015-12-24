@@ -45,7 +45,7 @@
         = link_to 'Add Anime', new_anime_path, class:'btn btn-primary pull-right'
 
 .col-md-12
-  - if current_user.is_admin?
+  - if user_signed_in? && current_user.is_admin?
     -# Import Animes
     .import-animes
       %h2 Import Animes

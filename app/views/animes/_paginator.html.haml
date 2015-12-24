@@ -1,22 +1,25 @@
 %nav
   %ul.pagination
-    %li
+    %li= hidden_field_tag 'total_pages', @animes.total_pages
+    %li.left-arrow
       -# table_params is a helper methode to whitelist the needed params to sort and order
       - if @animes.current_page > 1
         = link_to animes_path(table_params.merge(page: @animes.current_page-1)), aria: {label: "Previous"} do
           %span{"aria-hidden": "true"}
             &laquo;
       - else
-        %span{"aria-hidden": "true"}
-          &laquo;
+        %a
+          %span{"aria-hidden": "true"}
+            &laquo;
     
-    - (1..@animes.total_pages).each do |x|
-      %li{class: "#{"active" if x == @animes.current_page}"}= link_to x.to_s, animes_path(table_params.merge(page: x))
-    %li
+    - (1..@animes.total_pages).each do |page|
+      %li{class: "#{"active" if page == @animes.current_page}"}= link_to page.to_s, animes_path(table_params.merge(page: page)), value: page
+    %li.right-arrow
       - if @animes.current_page < @animes.total_pages
         = link_to animes_path(table_params.merge(page: @animes.current_page+1)), aria: {label: "Next"} do
           %span{"aria-hidden": "true"}
             &raquo;
       - else
-        %span{"aria-hidden": "true"}
-          &raquo;
+        %a
+          %span{"aria-hidden": "true"}
+            &raquo;
