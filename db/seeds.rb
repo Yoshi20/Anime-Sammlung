@@ -2,10 +2,8 @@
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
 # Examples:
-#
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-
 
 Genre.find_or_create_by(name:'Etchi')
 Genre.find_or_create_by(name:'Gourmet')
@@ -20,7 +18,6 @@ Genre.find_or_create_by(name:'Super-Sentai')
 Genre.find_or_create_by(name:'Shōjo')
 Genre.find_or_create_by(name:'Shōnen')
 Genre.find_or_create_by(name:'Sport')
-
 Genre.find_or_create_by(name:'Horror')
 Genre.find_or_create_by(name:'Psychological')
 Genre.find_or_create_by(name:'Thriller')
@@ -28,7 +25,6 @@ Genre.find_or_create_by(name:'Mystery')
 Genre.find_or_create_by(name:'Vampire')
 Genre.find_or_create_by(name:'Historical')
 Genre.find_or_create_by(name:'Adventure')
-
 
 # dummy rating
 Rating.find_or_create_by(anime_id:20, user_id:1, rating:3)
