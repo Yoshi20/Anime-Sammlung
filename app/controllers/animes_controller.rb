@@ -94,6 +94,7 @@ class AnimesController < ApplicationController
   # POST /animes.json
   def create
     @anime = Anime.new(anime_params)
+    current_user.animes << @anime
 
     respond_to do |format|
       if @anime.save

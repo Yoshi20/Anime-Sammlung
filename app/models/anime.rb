@@ -67,8 +67,8 @@ class Anime < ActiveRecord::Base
       nil
     else
       sum = self.ratings.map(&:rating).sum
-      avr = sum / count
-      avr.to_f.round(2)
+      avr = sum.to_f/count
+      avr.round(2)
     end
   end
 
