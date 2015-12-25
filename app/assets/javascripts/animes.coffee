@@ -1,13 +1,3 @@
-# getParamsAsHash = ->
-#   paramsHash = {}
-#   currentParamsArray = window.location.search.substring(1).split('&')
-#   for param in currentParamsArray
-#     currentParamArray = param.split('=')
-#     paramsHash[currentParamArray[0]] = currentParamArray[1]
-#   return paramsHash
-# currentParamsHash = getParamsAsHash()
-# alert hash.sort
-
 $ ->
   # click on a column-header anchortag to sort and order the list -> ajax request
   $('.anime-list-header').on 'click', 'a', (e) ->
@@ -19,7 +9,8 @@ $ ->
     else
       newOrder = 'asc'
     $(this).data('order', newOrder)
-    data = {order: newOrder}
+    paramsHash = getParamsAsHash()
+    data = {order: newOrder, page: paramsHash.page}
     successCallback = (response) ->
       console.log("success: get animes ajax request")
       $('.anime-list').html(response.animes)
@@ -64,7 +55,8 @@ $ ->
       sendReqeust = true
 
     if sendReqeust == true
-      data = {}
+      paramsHash = getParamsAsHash()
+      data = {sort: paramsHash.sort, order: paramsHash.order}
       successCallback = (response) ->
         console.log("success: get animes ajax request")
         $('.anime-list').html(response.animes)
@@ -74,6 +66,14 @@ $ ->
 
       getAnimesAjaxRequest(url, data, successCallback)
 
+# function to get the current url params as hash
+getParamsAsHash = ->
+  paramsHash = {}
+  currentParamsArray = window.location.search.substring(1).split('&')
+  for param in currentParamsArray
+    currentParamArray = param.split('=')
+    paramsHash[currentParamArray[0]] = currentParamArray[1]
+  return paramsHash
 
 # function to check if an url param exists
 # (it returns its index or -1 if it doesn't exists)
