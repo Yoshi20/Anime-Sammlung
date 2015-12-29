@@ -1,0 +1,14 @@
+%p
+  = "Hello #{@user.email}"
+
+%p
+  = "The Anime '#{@anime.name}' you created has been modified by '#{@other_user.email}'."
+
+%p
+  = "Please check "
+  = link_to "here", @anime
+  = " if the changes are acceptable. Otherwise please change them back and notify the user which changed the anime accordingly."
+
+%p
+  = "Best regards from the 'Anime-List' creator:"
+  %br= "jh"
