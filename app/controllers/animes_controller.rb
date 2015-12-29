@@ -7,7 +7,7 @@ class AnimesController < ApplicationController
   # GET /animes
   # GET /animes.json
   def index
-    puts ''
+    puts '' #blup
     puts 'Params:'
     puts params.inspect
     puts ''
@@ -97,7 +97,7 @@ class AnimesController < ApplicationController
     @anime.user = current_user
     respond_to do |format|
       if @anime.save
-        Rating.create({anime_id: @anime.id, user_id: current_user.id, rating: @anime.rating})
+        Rating.create({anime_id: @anime.id, user_id: current_user.try(:id), rating: @anime.rating})
         format.html { redirect_to @anime, notice: 'Anime was successfully created.' }
         format.json { render :show, status: :created, location: @anime }
       else
@@ -113,6 +113,9 @@ class AnimesController < ApplicationController
     anime_params.delete(:rating) # do not allow a new rating
     respond_to do |format|
       if @anime.update(anime_params)
+        if @anime.user != current_user
+          UserMailer::anime_changed_notification_mail(@anime, current_user).deliver_later
+        end
         format.html { redirect_to @anime, notice: 'Anime was successfully updated.' }
         format.json { render :show, status: :ok, location: @anime }
       else

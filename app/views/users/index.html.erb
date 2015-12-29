@@ -21,7 +21,7 @@
         <td class=''><%= user.current_sign_in_at %></td>
         <td class=''><%= user.created_at %></td>
         <td class='text-center' style='vertical-align: middle'>
-          <% if current_user == User.first %> <!-- blup (admin = first) -->
+          <% if current_user.is_admin && user != current_user %>
             <%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs' %>
           <% end %>
         </td>

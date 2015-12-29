@@ -1,17 +1,16 @@
 class UserMailer < ApplicationMailer
 
-  # Subject can be set in your I18n file at config/locales/en.yml
-  # with the following lookup:
-  #
-  #   en.user_mailer.anime_changed.subject
-  #
+  default from: 'no-reply@anime-list.ch'
+  layout 'mailer'
 
-  def anime_changed(anime)
+  def anime_changed_notification_mail(anime, other_user)
+    subject = "#{anime.name} has been modified"
   	@anime = anime
-
-  	mail to: "jh@oxon.ch", subject: '#{anime.name} has been modified'
+    @user = anime.user
+    @other_user = other_user
+    content_type = "text/html"
+  	mail(to: @anime.user.email, subject: subject, content_type: content_type)
   end
-
 
 end
 

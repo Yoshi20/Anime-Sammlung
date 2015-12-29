@@ -31,4 +31,5 @@
   %td.text-center{style: 'vertical-align: middle'}
     - if user_signed_in?
       = link_to 'Edit', edit_anime_path(anime), class:'btn btn-default btn-xs'
-      = link_to 'Destroy', anime, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs'
+      - if (anime.user == current_user) || current_user.is_admin
+        = link_to 'Destroy', anime, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs'

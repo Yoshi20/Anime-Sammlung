@@ -35,7 +35,7 @@
     .field.form-group
       = f.label "Initial Rating"
       %br
-      = f.number_field :rating, value:3, min:1, max:6, step:'any'
+      = f.number_field :rating, value:3, min:1, max:Anime::MAX_RATING, step:'any'
   
   .actions.form-group
     = f.submit class:'btn btn-primary'

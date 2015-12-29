@@ -9,8 +9,6 @@ class Anime < ActiveRecord::Base
   validates :episodes, numericality: {greater_than: 0}
   validates :rating, inclusion: {in: 0..6}
 
-  after_save :anime_changed_notification
-
   # define max rating
   MAX_RATING = 6
 
@@ -52,14 +50,6 @@ class Anime < ActiveRecord::Base
     end
     warnings
   end
-
-  def anime_changed_notification
-    #UserMailer.anime_changed(self).deliver if changed?
-  end
-
-  # def get_rating_for(user)
-  #   ratings.find_by(user:user)
-  # end
 
   def average_rating(new_rating = nil)
     count = self.ratings.to_a.count

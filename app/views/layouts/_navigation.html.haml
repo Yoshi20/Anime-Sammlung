@@ -5,6 +5,6 @@
     %li{role: "presentation", class: (@section == 'top10' ? 'active' : 'inactive')}
       = link_to 'Top10', top10_path
 
-    - if user_signed_in?
+    - if user_signed_in? && current_user.is_admin
       %li{role: "presentation", class: (@section == 'users' ? 'active' : 'inactive')}
         = link_to 'Users', users_path

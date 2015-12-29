@@ -9,12 +9,8 @@
 
   %td.text-center{style: 'vertical-align: middle'}= anime.episodes
 
-  - if anime.finished
-    %td.text-center{style: 'vertical-align: middle'}
-      %input{type: 'checkbox', checked: 'true', disabled: 'true'}
-  - else
-    %td.text-center{style: 'vertical-align: middle'}
-      %input{type: 'checkbox', disabled: 'true'}
+  %td.text-center{style: 'vertical-align: middle'}
+    = check_box_tag '', '', anime.finished?, disabled: true
   
   %td{style: 'vertical-align: middle'}= anime.description
 
