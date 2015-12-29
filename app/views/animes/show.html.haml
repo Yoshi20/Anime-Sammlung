@@ -1,9 +1,9 @@
 %p#notice= notice
 
-%div.col-md-3.col-xs-12
+%div.col-md-3
   %div
     - url = 'http://cdn.chia-anime.tv/content/cache2/' + @anime.name.gsub(' ', '-') + '.jpg'
-    = image_tag url, width: 250
+    = image_tag url, width: 220
   
   %div
     = link_to 'Animes', animes_path
@@ -12,7 +12,7 @@
     |
     = link_to 'Back', :back
 
-%div.col-md-9.col-xs-12
+%div.col-md-9
   %h2
     %strong= @anime.name
 

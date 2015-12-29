@@ -94,10 +94,10 @@ class AnimesController < ApplicationController
   # POST /animes.json
   def create
     @anime = Anime.new(anime_params)
-    current_user.animes << @anime
-
+    @anime.user = current_user
     respond_to do |format|
       if @anime.save
+        Rating.create({anime_id: @anime.id, user_id: current_user.id, rating: @anime.rating})
         format.html { redirect_to @anime, notice: 'Anime was successfully created.' }
         format.json { render :show, status: :created, location: @anime }
       else
@@ -110,6 +110,7 @@ class AnimesController < ApplicationController
   # PATCH/PUT /animes/1
   # PATCH/PUT /animes/1.json
   def update
+    anime_params.delete(:rating) # do not allow a new rating
     respond_to do |format|
       if @anime.update(anime_params)
         format.html { redirect_to @anime, notice: 'Anime was successfully updated.' }
@@ -149,7 +150,7 @@ class AnimesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def anime_params
-      params.require(:anime).permit(:name, :episodes, :finished, :rating, { genre_ids: []})
+      params.require(:anime).permit(:name, :episodes, :finished, :description, :rating, { genre_ids: []})
     end
 
     def table_params

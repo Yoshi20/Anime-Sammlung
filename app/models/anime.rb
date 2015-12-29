@@ -61,12 +61,15 @@ class Anime < ActiveRecord::Base
   #   ratings.find_by(user:user)
   # end
 
-  def average_rating
+  def average_rating(new_rating = nil)
     count = self.ratings.to_a.count
+    count += 1 if new_rating.present?
     if count.zero?
       nil
     else
-      sum = self.ratings.map(&:rating).sum
+      ratings = self.ratings.map(&:rating)
+      ratings << new_rating if new_rating.present?
+      sum = ratings.sum
       avr = sum.to_f/count
       avr.round(2)
     end
