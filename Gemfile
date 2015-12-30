@@ -71,3 +71,6 @@ gem 'haml-rails'
 
 # On Windows: https://github.com/tzinfo/tzinfo/wiki/Resolving-TZInfo::DataSourceNotFound-Errors
 #gem 'tzinfo-data'
+
+# See https://github.com/golive/dev-wiki/wiki/Ruby-spreadsheet-documentation
+gem 'spreadsheet' # .xls

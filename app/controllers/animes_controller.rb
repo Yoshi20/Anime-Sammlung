@@ -42,6 +42,8 @@ class AnimesController < ApplicationController
       if params[:sort].present?
         if params[:sort] == 'genres'
           @animes = @animes.joins(:genres).merge(Genre.order("genres.name"))
+        elsif params[:sort] == 'number_of_ratings'
+          @animes = Anime.joins(:ratings).merge(Rating.group("ratings.anime_id").order("count(ratings.anime_id)")).where(id: @animes)
         else
           @animes = @animes.order("animes.#{params[:sort]}")
         end

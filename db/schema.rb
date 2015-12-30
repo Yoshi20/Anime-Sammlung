@@ -11,17 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151224160325) do
+ActiveRecord::Schema.define(version: 20151230225125) do
 
   create_table "animes", force: :cascade do |t|
     t.string   "name"
     t.integer  "episodes"
     t.boolean  "finished"
-    t.text     "description"
+    t.text     "comment"
     t.float    "rating"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.integer  "user_id"
+    t.text     "description"
   end
 
   add_index "animes", ["user_id"], name: "index_animes_on_user_id"
@@ -59,9 +60,11 @@ ActiveRecord::Schema.define(version: 20151224160325) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.boolean  "is_admin"
+    t.string   "username"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["username"], name: "index_users_on_username", unique: true
 
 end

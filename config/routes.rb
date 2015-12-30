@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
   devise_for :users, controllers: { sessions:"users/sessions" }
+
   resources :users, only: [:index, :destroy]
   
   resources :ratings, only: [:create, :update]
@@ -9,9 +10,11 @@ Rails.application.routes.draw do
     collection {post :import}
   end
 
-  root to: "animes#index"
+  resources :top10, only: [:index]
 
-  get "/top10" => "top10#index"  
+  resource :random_anime, only: [:show]
+
+  root to: "animes#index"
 
   
   # The priority is based upon order of creation: first created -> highest priority.

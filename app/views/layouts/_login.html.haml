@@ -3,13 +3,18 @@
     .pull-right.form-inline
       %p
         = "Signed in as:"
-        %b{style: 'margin-right: 10px'}= current_user.email
-        = link_to 'Log Out', destroy_user_session_path, method: :delete, confirm:'Are you sure you want to log out?', class: 'form-control btn btn-warning'
+        %b{style: 'margin-right: 10px'}
+          = current_user.username
+          - if current_user.is_admin
+            = ' (Administrator)'
+        = link_to 'Log Out', destroy_user_session_path, method: :delete, confirm:'Are you sure you want to log out?', class: 'btn btn-warning'
+        or
+        = link_to 'Edit User', edit_user_registration_path, class: 'btn btn-primary'
   - else
     -# unless devise_controller?
     = form_tag session_path(:user), class: "form-inline pull-right" do
       .form-group
-        = email_field_tag "user[email]", "", class: "form-control", placeholder: "Email"
+        = text_field_tag "user[login]", "", class: "form-control", placeholder: "Username or Email"
         = password_field_tag "user[password]", "", class: "form-control", placeholder: "Password"                
         = submit_tag "Sign in", class: "form-control btn btn-success"
         = "or"

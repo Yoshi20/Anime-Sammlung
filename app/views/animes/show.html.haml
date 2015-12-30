@@ -36,9 +36,17 @@
     = @anime.description
 
   %p
+    %strong Comment:
+    = @anime.comment
+
+  %p
+    %strong Number of Ratings:
+    = @anime.ratings.to_a.count
+
+  %p
     %strong Average Rating:
     = @anime.ratings.to_a.count.zero? ? '-' : @anime.average_rating
 
   %p
-    %strong Anime was created by:
-    = @anime.user.present? ? @anime.user.email : '-'
+    %strong Anime added by:
+    = @anime.user.present? ? @anime.user.username : '-'

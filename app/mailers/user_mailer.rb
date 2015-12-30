@@ -9,10 +9,7 @@ class UserMailer < ApplicationMailer
     @user = anime.user
     @other_user = other_user
     content_type = "text/html"
-  	mail(to: @anime.user.email, subject: subject, content_type: content_type)
+  	mail(to: @user.email, subject: subject, content_type: content_type)
   end
 
 end
-
-
-

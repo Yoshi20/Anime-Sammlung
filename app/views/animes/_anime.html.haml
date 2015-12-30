@@ -1,14 +1,21 @@
 %tr
-  %td= link_to anime.name, anime
+  %td
+    = link_to anime.name, anime
 
-  %td= anime.genres.order(:name).map(&:name).join(", ")
+  %td
+    = anime.genres.order(:name).map(&:name).join(", ")
 
-  %td.text-center= anime.episodes
+  %td.text-center
+    = anime.episodes
 
   %td.text-center
     = check_box_tag '', '', anime.finished?, disabled: true
 
-  %td= anime.description
+  %td
+    = anime.comment
+
+  %td.text-center
+    = anime.ratings.to_a.count
 
   %td.text-center
     = anime.ratings.to_a.count.zero? ? anime.rating : anime.average_rating
