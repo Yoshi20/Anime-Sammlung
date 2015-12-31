@@ -12,6 +12,13 @@ class Anime < ActiveRecord::Base
   # define max rating
   MAX_RATING = 6
 
+  # chia-anime image-url
+  def image_url
+    url = 'http://cdn.chia-anime.tv/content/cache2/'
+    url += self.name.gsub(' ', '-')
+    url += '.jpg'
+  end
+
   # to add the name into the url
   def to_param
     "#{id} #{name}".parameterize
@@ -31,7 +38,7 @@ class Anime < ActiveRecord::Base
     CSV.foreach(file.path, headers:true) do |row|
       #raise row.to_hash.inspect
       #raise Anime.first.attributes.keys.inspect
-      attributes = row.to_hash.keep_if{|key, _| %w(name genres episodes finished description rating).include?(key)}
+      attributes = row.to_hash.keep_if{|key, _| %w(name genres episodes finished description comment rating).include?(key)}
       attributes["genres"] = attributes["genres"].split(" / ").map do |name|
         if g = Genre.find_by(name: name)
          g 

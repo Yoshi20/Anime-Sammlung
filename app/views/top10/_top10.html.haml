@@ -1,7 +1,6 @@
 %tr
   %td
-    - url = 'http://cdn.chia-anime.tv/content/cache2/' + anime.name.gsub(' ', '-') + '.jpg'
-    = image_tag url, width: 200, height: 250
+    = image_tag anime.image_url, width: 200, height: 250
   
   %td{style: 'vertical-align: middle'}= link_to anime.name, anime
 
@@ -27,9 +26,9 @@
       = form_for current_user.get_rating_for(anime) || anime.ratings.build do
         = hidden_field_tag :anime_id, anime.id, id: "anime_id_#{anime.id}"
         - Anime::MAX_RATING.times do |x|
-          = radio_button_tag :rating, x+1, false, {id: "anime_rating_#{anime.id}_#{x}"}
+          - your_rating = current_user.ratings.find_by(anime_id: anime.id).try(:rating)
+          = radio_button_tag :rating, x+1, (x+1) == your_rating, {id: "anime_rating_#{anime.id}_#{x}"}
           = label_tag "anime_rating_#{anime.id}_#{x}", x+1
-        
         = submit_tag 'Rate', class:'btn btn-primary btn-xs'
 
   %td.text-center{style: 'vertical-align: middle'}

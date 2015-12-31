@@ -1,7 +1,7 @@
 class AnimesController < ApplicationController
   before_action :set_anime, only: [:show, :edit, :update, :destroy]
   before_action :get_genres, only: [:index, :new, :edit, :create]
-  before_action :authenticate_user!, only: [:create, :update, :destroy]
+  before_action :authenticate_user!, only: [:edit, :create, :update, :destroy]
   before_action { @section = 'animes' }
 
   # GET /animes
@@ -155,7 +155,7 @@ class AnimesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def anime_params
-      params.require(:anime).permit(:name, :episodes, :finished, :description, :rating, { genre_ids: []})
+      params.require(:anime).permit(:name, :episodes, :finished, :description, :comment, :rating, { genre_ids: []})
     end
 
     def table_params

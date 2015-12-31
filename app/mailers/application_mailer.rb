@@ -1,6 +1,5 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "jh@oxon.ch"
-  
+  default from: 'no-reply@anime-list.ch'
   layout 'mailer'
 
 end

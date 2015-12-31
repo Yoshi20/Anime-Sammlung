@@ -1,17 +1,17 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  genre: MyString
+  name: Anime1
   episodes: 1
   finished: false
   description: MyText
+  comment: MyText
   rating: 1.5
 
 two:
-  name: MyString
-  genre: MyString
+  name: Anime2
   episodes: 1
-  finished: false
+  finished: true
   description: MyText
-  rating: 1.5
+  comment: MyText
+  rating: 2.5
