@@ -26,6 +26,3 @@ Genre.find_or_create_by(name:'Mystery')
 Genre.find_or_create_by(name:'Vampire')
 Genre.find_or_create_by(name:'Historical')
 Genre.find_or_create_by(name:'Adventure')
-
-# initial Admin
-User.create!(email: "admin@admin.ch", password: "1234", username: "admin", is_admin: true)
