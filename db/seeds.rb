@@ -5,6 +5,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+# Anime-Ratings:
 Genre.find_or_create_by(name:'Etchi')
 Genre.find_or_create_by(name:'Gourmet')
 Genre.find_or_create_by(name:'Harem')
@@ -26,5 +27,5 @@ Genre.find_or_create_by(name:'Vampire')
 Genre.find_or_create_by(name:'Historical')
 Genre.find_or_create_by(name:'Adventure')
 
-# dummy rating
-Rating.find_or_create_by(anime_id:20, user_id:1, rating:3)
+# Admin
+# User.find_or_create_by(username: 'jh', email: 'jh@oxon.ch', encrypted_password: '$2a$10$1SbZr0cpYTmi6hdKx54yseXxD63kJUM0FE0OL/Mu978wwPmuJvt4O', is_admin: true)

@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20151230225125) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "animes", force: :cascade do |t|
     t.string   "name"
     t.integer  "episodes"
@@ -25,12 +28,15 @@ ActiveRecord::Schema.define(version: 20151230225125) do
     t.text     "description"
   end
 
-  add_index "animes", ["user_id"], name: "index_animes_on_user_id"
+  add_index "animes", ["user_id"], name: "index_animes_on_user_id", using: :btree
 
   create_table "animes_genres", id: false, force: :cascade do |t|
     t.integer "anime_id"
     t.integer "genre_id"
   end
+
+  add_index "animes_genres", ["anime_id"], name: "index_animes_genres_on_anime_id", using: :btree
+  add_index "animes_genres", ["genre_id"], name: "index_animes_genres_on_genre_id", using: :btree
 
   create_table "genres", force: :cascade do |t|
     t.string   "name"
@@ -59,12 +65,13 @@ ActiveRecord::Schema.define(version: 20151230225125) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
-    t.boolean  "is_admin"
     t.string   "username"
+    t.boolean  "is_admin"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-  add_index "users", ["username"], name: "index_users_on_username", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
+  add_foreign_key "animes", "users"
 end

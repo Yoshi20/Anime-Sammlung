@@ -1,51 +1,52 @@
 %p#notice= notice
 
-%div.col-md-3
-  %div
-    = image_tag @anime.image_url, width: 220
-  
-  %div
-    = link_to 'Animes', animes_path
-    |
-    = link_to 'Edit', edit_anime_path(@anime)
-    |
-    = link_to 'Back', :back
+- if @anime.present?
+  %div.col-md-3
+    %div
+      = image_tag @anime.try(:image_url), width: 220
 
-%div.col-md-9
-  %h2
-    %strong= @anime.name
+    %div
+      = link_to 'Animes', animes_path
+      |
+      = link_to 'Edit', edit_anime_path(@anime)
+      |
+      = link_to 'Back', :back
 
-  %p
-    %strong Genre:
-    = @anime.genres.map(&:name).join(', ')
- 
-  %p
-    %strong Episodes:
-    = @anime.episodes
+  %div.col-md-9
+    %h2
+      %strong= @anime.name
 
-  %p
-    %strong Finished:
-    - if @anime.finished
-      %input{type: 'checkbox', checked: 'true', disabled: 'true'}
-    - else
-      %input{type: 'checkbox', disabled: 'true'}
+    %p
+      %strong Genre:
+      = @anime.genres.map(&:name).join(', ')
 
-  %p
-    %strong Description:
-    = @anime.description
+    %p
+      %strong Episodes:
+      = @anime.episodes
 
-  %p
-    %strong Comment:
-    = @anime.comment
+    %p
+      %strong Finished:
+      - if @anime.finished
+        %input{type: 'checkbox', checked: 'true', disabled: 'true'}
+      - else
+        %input{type: 'checkbox', disabled: 'true'}
 
-  %p
-    %strong Number of Ratings:
-    = @anime.ratings.to_a.count
+    %p
+      %strong Description:
+      = @anime.description
 
-  %p
-    %strong Average Rating:
-    = @anime.ratings.to_a.count.zero? ? '-' : @anime.average_rating
+    %p
+      %strong Comment:
+      = @anime.comment
 
-  %p
-    %strong Anime added by:
-    = @anime.user.present? ? @anime.user.username : '-'
+    %p
+      %strong Number of Ratings:
+      = @anime.ratings.to_a.count
+
+    %p
+      %strong Average Rating:
+      = @anime.ratings.to_a.count.zero? ? '-' : @anime.average_rating
+
+    %p
+      %strong Anime added by:
+      = @anime.user.present? ? @anime.user.username : '-'
