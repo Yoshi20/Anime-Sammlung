@@ -27,5 +27,5 @@ Genre.find_or_create_by(name:'Vampire')
 Genre.find_or_create_by(name:'Historical')
 Genre.find_or_create_by(name:'Adventure')
 
-# Admin
-# User.find_or_create_by(username: 'jh', email: 'jh@oxon.ch', encrypted_password: '$2a$10$1SbZr0cpYTmi6hdKx54yseXxD63kJUM0FE0OL/Mu978wwPmuJvt4O', is_admin: true)
+# initial Admin
+User.create!(email: "admin@admin.ch", password: "1234", username: "admin", is_admin: true)

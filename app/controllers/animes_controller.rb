@@ -7,11 +7,6 @@ class AnimesController < ApplicationController
   # GET /animes
   # GET /animes.json
   def index
-    puts '' #blup
-    puts 'Params:'
-    puts params.inspect
-    puts ''
-
     # get animes
     @animes = Anime.includes(:genres, :ratings).all
 
