@@ -74,3 +74,6 @@ gem 'haml-rails'
 
 # See https://github.com/golive/dev-wiki/wiki/Ruby-spreadsheet-documentation
 gem 'spreadsheet' # .xls
+
+# See https://devcenter.heroku.com/articles/getting-started-with-rails4#visit-your-application
+gem 'rails_12factor', group: :production
