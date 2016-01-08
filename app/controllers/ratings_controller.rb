@@ -34,7 +34,7 @@ class RatingsController < ApplicationController
       if params[:anime_id].present?
         a_id = params[:anime_id]
         r_val = params[:rating]
-        new_rating = Rating.create({anime_id:a_id, user:current_user, rating:r_val})
+        new_rating = Rating.create({anime_id: a_id, user: current_user, rating: r_val})
 
         flash[:success] = "Your rating for '#{new_rating.anime.name}' has been saved"
 
