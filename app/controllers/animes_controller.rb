@@ -134,7 +134,8 @@ class AnimesController < ApplicationController
 
   # import /animes/import
   def import
-    Anime.import(params[:file])
+    warnings = Anime.import(params[:file], current_user)
+    puts warnings.inspect if warnings.length > 0
     redirect_to root_url, notice: "Animes imported"
   end
 

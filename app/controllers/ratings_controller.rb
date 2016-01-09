@@ -2,7 +2,7 @@ class RatingsController < ApplicationController
   before_action :set_rating, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:create, :update, :destroy]
   after_action :set_anime_rating, only: [:create, :update]
-  before_action { @section = 'raitings' }
+  before_action { @section = 'ratings' }
   
   # GET /ratings
   # GET /ratings.json
@@ -34,7 +34,7 @@ class RatingsController < ApplicationController
       if params[:anime_id].present?
         a_id = params[:anime_id]
         r_val = params[:rating]
-        new_rating = Rating.create({anime_id:a_id, user:current_user, rating:r_val})
+        new_rating = Rating.create({anime_id: a_id, user: current_user, rating: r_val})
 
         flash[:success] = "Your rating for '#{new_rating.anime.name}' has been saved"
 

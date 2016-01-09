@@ -44,15 +44,14 @@
       .add-anime-button
         = link_to 'Add Anime', new_anime_path, class:'btn btn-primary pull-right'
 
-.col-md-12
+.col-md-12{style: 'margin-bottom: 20px'}
   - if user_signed_in? && current_user.is_admin?
     -# Import Animes
     .import-animes
       %h2 Import Animes
       = form_tag import_animes_path, multipart:true do
-        = file_field_tag :file
+        = file_field_tag :file, style: 'display: inline'
         = submit_tag "Import", class:'btn btn-primary'
-
 
 -# a random picture
 .myPicture.col-md-12
