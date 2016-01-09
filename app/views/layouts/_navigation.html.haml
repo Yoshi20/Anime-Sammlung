@@ -9,6 +9,9 @@
     %li{role: "presentation", class: (@section == 'random_anime' ? 'active' : 'inactive')}
       = link_to 'Random Anime', random_anime_path
 
+    %li{role: "presentation", class: (@section == 'animes_overview' ? 'active' : 'inactive')}
+      = link_to 'Overview', animes_overview_index_path
+
     - if user_signed_in? && current_user.is_admin
       %li{role: "presentation", class: (@section == 'users' ? 'active' : 'inactive')}
         = link_to 'Users', users_path

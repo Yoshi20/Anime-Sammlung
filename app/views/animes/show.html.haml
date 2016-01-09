@@ -47,6 +47,12 @@
       %strong Average Rating:
       = @anime.ratings.to_a.count.zero? ? '-' : @anime.average_rating
 
+    - if user_signed_in?
+      %p
+        %strong My Rating:
+        - rating = Rating.find_by(anime_id: @anime).rating 
+        = rating.present? ? rating : '-'
+
     %p
       %strong Anime added by:
       = @anime.user.present? ? @anime.user.username : '-'

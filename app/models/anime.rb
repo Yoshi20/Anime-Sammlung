@@ -140,4 +140,16 @@ class Anime < ActiveRecord::Base
     end
   end
 
+  # Erstellt ein nach Anfangsbuchstaben sortierter Hash mit gegebenen Animes
+  def self.create_alphabetical_index(animes, schluessel = :name)
+    index = {}
+    animes.order(schluessel).each do |anime|
+      letter = anime.send(schluessel).to_s.parameterize.capitalize[0,1]
+      letter = '#' unless ('A'..'Z').member?(letter) # Wenns kein Buchstabe ist, muss es ins #
+      index[letter] = [] unless index[letter]
+      index[letter] << anime
+    end
+    index
+  end
+
 end

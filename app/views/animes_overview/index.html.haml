@@ -1,0 +1,27 @@
+.container-fluid.mitglieder-admin
+  .row.dark
+    .col-md-12
+      %h1= "Overview"
+
+  .row.content.mitglieder
+    .col-md-12
+      - animes_index = Anime.create_alphabetical_index(@animes)
+      - letter_ranges = ['A'..'D', 'E'..'H', 'I'..'L', 'M'..'P', 'Q'..'T', 'U'..'X', 'Y'..'Z']
+      %table{:width => '100%'}
+        - for range in letter_ranges
+          - if range.end == "Z" # Nach dem Z kommt #, wo alle reinkommen welche nicht mit einem Buchstaben anfangen.
+            - range = range.to_a + Array.new(1, '#')
+          %tr
+            - for letter in range
+              %td{:style => 'vertical-align: top', :width => "#{100 / letter_ranges.length}%"}
+                %h2
+                  =h letter
+                - for anime in animes_index[letter].to_a
+                  - if @rated_animes.present? && @rated_animes.include?(anime.id)
+                    %span.glyphicon.glyphicon-check
+                      = link_to anime.name, anime_path(anime), style: 'margin-left: -8px'
+                  - else
+                    %span.glyphicon.glyphicon-unchecked
+                      = link_to anime.name, anime_path(anime), style: 'margin-left: -8px'
+                  %br
+                %br

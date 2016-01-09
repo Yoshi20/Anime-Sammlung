@@ -14,8 +14,9 @@ Rails.application.routes.draw do
 
   resource :random_anime, only: [:show]
 
-  root to: "animes#index"
+  resources :animes_overview, only: [:index]
 
+  root to: "animes#index"
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
