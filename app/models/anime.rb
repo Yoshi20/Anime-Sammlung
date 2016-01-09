@@ -5,8 +5,7 @@ class Anime < ActiveRecord::Base
 
   validates :name, :rating, presence: true
   validates :name, uniqueness:true, length:{maximum:50}
-  validates :episodes, length:{minimum:1}
-  validates :episodes, numericality: {greater_than: 0}
+  validates :episodes, numericality: {greater_than: -1}
   validates :rating, inclusion: {in: 0..6}
 
   # define max rating
@@ -32,6 +31,7 @@ class Anime < ActiveRecord::Base
     end
   end
 
+#import CSV
   # def self.import(file)
   #   warnings = {unbekannte_genres: []}
   #   CSV.foreach(file.path, headers:true) do |row|
@@ -56,56 +56,71 @@ class Anime < ActiveRecord::Base
   #   warnings
   # end
 
+#import XLS
   def self.import(file, user)
-    warnings = {updated_animes: [], new_genres: []}
+    permitted_columns = %w(name genres episodes finished comment description rating)
+    warnings = {updated_animes: [], new_genres: [], animes_without_a_genre: []}
+    params_hash = {}
+
     Spreadsheet.client_encoding = 'UTF-8'
     book = Spreadsheet.open file.path
     sheet = book.worksheet 0 # use only the first worksheet
-    sheet.each do |row|
 
-      permitted_columns = %w(name genres episodes finished description comment rating)
-      row = row.premit(permitted_columns)
+    # header (define params_hash_keys)
+    sheet.row(0).each do |column|
+      params_hash[column.downcase] = nil
+    end
+    # body
+    sheet.each_with_index do |row, row_index|
 
-      raise row.inspect
+      if row_index > 0
 
-      anime_attributes = permitted_columns.except(:genres, :rating)
-      #anime_attributes = row.to_hash.keep_if{|key, _value| anime_attributes.include?(key)}
-
-      # anime
-      anime = Anime.find_by(name: anime_attributes["name"])
-      if anime.present?
-        anime.update(anime_attributes)
-        warnings[:updated_animes] << "#{anime.name} (anime attributes)"
-      else
-        anime = Anime.create!(anime_attributes)
-      end
-
-      # genres
-      permitted_columns[:genres].split(", ").each do |genre_name|
-        genre = Genre.find_by(name: genre_name)
-        if not genre.present?
-          genre = Genre.create!({name: genre_name})
-          warnings[:new_genres] << genre_name
+        #fill up params_hash with current row data
+        permitted_columns.each_with_index do |c, i|
+          params_hash[c] = row[i]
         end
-        raise anime.genres.inspect
-        anime.genres.merge(genre)
-      end
 
-      # rating
-      new_raiting = permitted_columns[:rating] || 0
-      old_raiting = Rating.find_by({anime_id: anime.id, user_id: user.id})
-      if old_rating.present?
-        if current_user != user
-          #...
+        #anime
+        anime_attributes = params_hash.except("genres")
+        anime_attributes["rating"] = 0 if anime_attributes["rating"].nil?
+        anime = Anime.find_by(name: anime_attributes["name"])
+        if anime.present?
+          anime.update!(anime_attributes)
+          warnings[:updated_animes] << anime.name
+        else
+          anime = Anime.create!(anime_attributes)
         end
-        rating.update({user_id: user.id, rating: new_rating})
-        warnings[:updated_animes] << "#{anime.name} (rating)"
-      else
-        Rating.create!({anime_id: anime.id, user_id: user.id, rating: new_rating})
-      end
 
-      # user
-      anime.user = user
+        # genres
+        if params_hash["genres"].present?
+          gernes_collection = []
+          params_hash["genres"].split(", ").each do |genre_name|
+            genre = Genre.find_by(name: genre_name)
+            if not genre.present?
+              genre = Genre.create!({name: genre_name})
+              warnings[:new_genres] << genre_name
+            end
+            gernes_collection << genre
+          end
+          anime.genres.destroy_all
+          anime.genres = gernes_collection
+        else
+          warnings[:animes_without_a_genre] << anime.name
+        end
+
+        # rating
+        new_rating = params_hash["rating"] || 0
+        old_rating = Rating.find_by({anime_id: anime.id, user_id: user.id})
+        if old_rating.present?
+          old_rating.update!({rating: new_rating})
+        else
+          Rating.create!({anime_id: anime.id, user_id: user.id, rating: new_rating})
+        end
+
+        # user
+        anime.update!(user: user)
+
+      end
     end
     
     warnings

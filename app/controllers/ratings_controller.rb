@@ -2,7 +2,7 @@ class RatingsController < ApplicationController
   before_action :set_rating, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:create, :update, :destroy]
   after_action :set_anime_rating, only: [:create, :update]
-  before_action { @section = 'raitings' }
+  before_action { @section = 'ratings' }
   
   # GET /ratings
   # GET /ratings.json
