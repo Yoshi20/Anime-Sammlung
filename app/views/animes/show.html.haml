@@ -1,58 +1,73 @@
 %p#notice= notice
 
 - if @anime.present?
-  %div.col-md-3
-    %div
-      = image_tag @anime.try(:image_url), width: 220
+  .col-md-12
+    %div.col-md-3
+      %div
+        = image_tag @anime.try(:image_url), width: 220
 
-    %div
-      = link_to 'Animes', animes_path
-      |
-      = link_to 'Edit', edit_anime_path(@anime)
-      |
-      = link_to 'Back', :back
+      %div
+        = link_to 'Animes', animes_path
+        - if user_signed_in?
+          |
+          = link_to 'Edit', edit_anime_path(@anime)
+        |
+        = link_to 'Back', :back
 
-  %div.col-md-9
-    %h2
-      %strong= @anime.name
+    %div.col-md-8
+      %h2
+        %strong= @anime.name
 
-    %p
-      %strong Genre:
-      = @anime.genres.map(&:name).join(', ')
-
-    %p
-      %strong Episodes:
-      = @anime.episodes
-
-    %p
-      %strong Finished:
-      - if @anime.finished
-        %input{type: 'checkbox', checked: 'true', disabled: 'true'}
-      - else
-        %input{type: 'checkbox', disabled: 'true'}
-
-    %p
-      %strong Description:
-      = @anime.description
-
-    %p
-      %strong Comment:
-      = @anime.comment
-
-    %p
-      %strong Number of Ratings:
-      = @anime.ratings.to_a.count
-
-    %p
-      %strong Average Rating:
-      = @anime.ratings.to_a.count.zero? ? '-' : @anime.average_rating
-
-    - if user_signed_in?
       %p
-        %strong My Rating:
-        - rating = Rating.find_by(anime_id: @anime).rating 
-        = rating.present? ? rating : '-'
+        %strong Genre:
+        = @anime.genres.map(&:name).join(', ')
 
-    %p
-      %strong Anime added by:
-      = @anime.user.present? ? @anime.user.username : '-'
+      %p
+        %strong Episodes:
+        = @anime.episodes
+
+      %p
+        %strong Finished:
+        - if @anime.finished
+          %input{type: 'checkbox', checked: 'true', disabled: 'true'}
+        - else
+          %input{type: 'checkbox', disabled: 'true'}
+
+      %p
+        %strong Description:
+        = @anime.description
+
+      %p
+        %strong Comment:
+        = @anime.comment
+
+      %p
+        %strong Number of Ratings:
+        = @anime.ratings.to_a.count
+
+      %p
+        %strong Average Rating:
+        = @anime.ratings.to_a.count.zero? ? '-' : @anime.average_rating
+
+      - if user_signed_in?
+        %p
+          %strong My Rating:
+          - rating = Rating.find_by(anime_id: @anime, user_id: current_user).rating 
+          = rating.present? ? rating : '-'
+
+      %p
+        %strong Anime added by:
+        = @anime.user.present? ? @anime.user.username : '-'
+
+    %div.col-md-1
+      - if user_signed_in?
+        -# update if already existing or create rating
+        .form{style: 'padding-left: 20px; margin-top: 110px;'}
+          = form_for current_user.get_rating_for(@anime) || @anime.ratings.build do
+            = hidden_field_tag :anime_id, @anime.id, id: "anime_id_#{@anime.id}", source: 'random_anime'
+            - Anime::MAX_RATING.times do |x|
+              - my_rating = current_user.ratings.find_by(anime_id: @anime.id).try(:rating)
+              %div
+                = radio_button_tag :rating, x+1, (x+1) == my_rating, {id: "anime_rating_#{@anime.id}_#{x}"}
+                = label_tag "anime_rating_#{@anime.id}_#{x}", x+1
+            = submit_tag 'Rate', class:'btn btn-primary btn-xs'

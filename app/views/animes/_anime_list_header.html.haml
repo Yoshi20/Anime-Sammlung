@@ -18,5 +18,6 @@
   %th.text-center
     = link_to 'Ø Rating', animes_path(table_params.merge(sort: 'rating')), data: {order: 'asc'}
   - if user_signed_in?
-    %th.text-center Your Rating
+    %th.text-center
+      = link_to 'My Rating', animes_path(table_params.merge(sort: 'my_rating')), data: {order: 'asc'}
     %th.action

@@ -36,7 +36,8 @@
 .col-md-12
   -# pageinator
   .col-md-10
-    = render 'paginator'
+    - if @animes.any?
+      = render 'paginator'
 
   -# 'Add Anime' button
   .col-md-2

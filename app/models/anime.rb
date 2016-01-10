@@ -25,7 +25,7 @@ class Anime < ActiveRecord::Base
 
   def self.search(search)
     if search
-      where('name LIKE ?', "%#{search}%")
+      where('name LIKE ? or name LIKE ? or name LIKE ?', "%#{search}%", "%#{search.capitalize}%", "%#{search.titleize}%")
     else
       :all
     end
