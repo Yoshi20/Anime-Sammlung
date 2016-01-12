@@ -16,20 +16,23 @@ class AnimesController < ApplicationController
       # handle search (self written method)
       if params[:search].present?
         @animes = @animes.search(params[:search])
+        if @animes.empty?
+          flash.now[:alert] = "There were no Animes found with this search query."
+        end
       end
 
       # handle params to limit selected animes
       if params[:order_by_letter].present?
         @animes = @animes.where('animes.name LIKE ?', "#{params[:order_by_letter]}%")
         if @animes.empty?
-          flash.now[:alert] = "There are no Animes that begin with the letter '#{params[:order_by_letter]}'"
+          flash.now[:alert] = "There are no Animes that begin with the letter '#{params[:order_by_letter]}'."
         end
       end
 
       if params[:genre_id].present?
         @animes = @animes.joins(:genres).where(genres: {id: params[:genre_id].to_i})
         if @animes.empty?
-          flash.now[:alert] = "There are no Animes with the genre '#{Genre.find(params[:genre_id].to_i).name}'"
+          flash.now[:alert] = "There are no Animes with the genre '#{Genre.find(params[:genre_id].to_i).name}'."
         end
       end
 
