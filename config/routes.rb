@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   resources :users, only: [:index, :destroy]
   
-  resources :ratings, only: [:create, :update]
+  resources :ratings, only: [:create, :update, :destroy]
 
   resources :animes do
     collection {post :import}

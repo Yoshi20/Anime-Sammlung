@@ -52,6 +52,7 @@ class User < ActiveRecord::Base
   end
 
   def get_rating_for(anime)
+    # Rating.find_by(user_id: self, anime_id: anime)
     @_all_ratings ||= ratings.to_a
     @_all_ratings.select{|r| r.anime == anime}.first
   end

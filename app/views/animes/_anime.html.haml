@@ -12,17 +12,19 @@
     = check_box_tag '', '', anime.finished?, disabled: true
 
   %td
-    = anime.comment
+    = truncate(anime.comment, length: 50)
 
   %td.text-center
     = anime.ratings.to_a.count
 
   %td.text-center
-    = anime.ratings.to_a.count.zero? ? anime.rating : anime.average_rating
+    - rating = anime.average_rating
+    = rating.present? ? rating : '-'
 
   - if user_signed_in?
     %td.text-center
-      = current_user.get_rating_for(anime).nil? ? '-' : current_user.get_rating_for(anime).rating
+      - my_rating = current_user.get_rating_for(anime).try(:rating)
+      = my_rating.present? ? my_rating : '-'
   
   %td.text-center
     - if user_signed_in?
@@ -30,7 +32,7 @@
       = form_for current_user.get_rating_for(anime) || anime.ratings.build do
         = hidden_field_tag :anime_id, anime.id, id: "anime_id_#{anime.id}"
         - Anime::MAX_RATING.times do |x|
-          - my_rating = current_user.ratings.find_by(anime_id: anime.id).try(:rating)
+          - my_rating = current_user.get_rating_for(anime).try(:rating)
           = radio_button_tag :rating, x+1, (x+1) == my_rating, {id: "anime_rating_#{anime.id}_#{x}"}
           = label_tag "anime_rating_#{anime.id}_#{x}", x+1
         = submit_tag 'Rate', class:'btn btn-primary btn-xs'

@@ -1,5 +1,3 @@
-%p#notice= notice
-
 - if @anime.present?
   .col-md-12
     %div.col-md-3
@@ -52,7 +50,7 @@
       - if user_signed_in?
         %p
           %strong My Rating:
-          - rating = Rating.find_by(anime_id: @anime, user_id: current_user).rating 
+          - rating = Rating.find_by(anime_id: @anime, user_id: current_user).try(:rating)
           = rating.present? ? rating : '-'
 
       %p
@@ -71,3 +69,6 @@
                 = radio_button_tag :rating, x+1, (x+1) == my_rating, {id: "anime_rating_#{@anime.id}_#{x}"}
                 = label_tag "anime_rating_#{@anime.id}_#{x}", x+1
             = submit_tag 'Rate', class:'btn btn-primary btn-xs'
+            - rating = Rating.find_by(user_id: current_user, anime_id: @anime)
+            - if rating.present?
+              = link_to 'Delete Rating', rating_path(rating), method: :delete, class: 'btn btn-danger btn-xs', style: "margin-left: -24px;"
