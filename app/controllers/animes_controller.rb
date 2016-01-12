@@ -119,6 +119,7 @@ class AnimesController < ApplicationController
         format.html { redirect_to @anime, notice: 'Anime was successfully updated.' }
         format.json { render :show, status: :ok, location: @anime }
       else
+        get_genres()
         format.html { render :edit }
         format.json { render json: @anime.errors, status: :unprocessable_entity }
       end
