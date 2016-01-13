@@ -1,6 +1,10 @@
 - if @anime.present?
+  .title-div
+    %h1
+      = @anime.name
+
   .col-md-12
-    %div.col-md-3
+    %div.col-md-3{style: 'padding-left: 0px;'}
       %div
         = image_tag @anime.try(:image_url), width: 220
 
@@ -12,17 +16,10 @@
         |
         = link_to 'Back', :back
 
-    %div.col-md-8
-      %h2
-        %strong= @anime.name
-
+    %div.col-md-8{style: 'padding-left: 0px;'}
       %p
         %strong Genre:
         = @anime.genres.map(&:name).join(', ')
-
-      %p
-        %strong Episodes:
-        = @anime.episodes
 
       %p
         %strong Finished:
@@ -32,26 +29,38 @@
           %input{type: 'checkbox', disabled: 'true'}
 
       %p
-        %strong Description:
-        = @anime.description
+        %strong Episodes:
+        = @anime.episodes
 
-      %p
-        %strong Comment:
-        = @anime.comment
+      %p{style: 'margin-left: 15px;'}
+        %strong OVAs:
+        = @anime.ova_episodes || 0
 
-      %p
-        %strong Number of Ratings:
-        = @anime.ratings.to_a.count
+      %p{style: 'margin-left: 15px;'}
+        %strong Specials:
+        = @anime.special_episodes || 0
 
       %p
         %strong Average Rating:
         = @anime.ratings.to_a.count.zero? ? '-' : @anime.average_rating
 
+      %p{style: 'margin-left: 15px;'}
+        %strong Number of Ratings:
+        = @anime.ratings.to_a.count || 0
+
       - if user_signed_in?
-        %p
+        %p{style: 'margin-left: 15px;'}
           %strong My Rating:
           - rating = Rating.find_by(anime_id: @anime, user_id: current_user).try(:rating)
           = rating.present? ? rating : '-'
+
+      %p
+        %strong Description:
+        = @anime.description || '-'
+
+      %p
+        %strong Comment:
+        = @anime.comment || '-'
 
       %p
         %strong Anime added by:

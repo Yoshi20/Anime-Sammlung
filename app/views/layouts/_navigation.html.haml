@@ -1,17 +1,16 @@
-.navigation-header
-  %ul.nav.nav-pills
-    %li{role: "presentation", class: (@section == 'animes' ? 'active' : 'inactive')}
-      = link_to 'Animes', animes_path
+%ul.nav.nav-pills
+  %li{role: "presentation", class: (@section == 'animes' ? 'active' : 'inactive')}
+    = link_to 'Animes', animes_path
 
-    %li{role: "presentation", class: (@section == 'top10' ? 'active' : 'inactive')}
-      = link_to 'Top10', top10_index_path
+  %li{role: "presentation", class: (@section == 'top10' ? 'active' : 'inactive')}
+    = link_to 'Top10', top10_index_path
 
-    %li{role: "presentation", class: (@section == 'random_anime' ? 'active' : 'inactive')}
-      = link_to 'Random Anime', random_anime_path
+  %li{role: "presentation", class: (@section == 'random_anime' ? 'active' : 'inactive')}
+    = link_to 'Random Anime', random_anime_path
 
-    %li{role: "presentation", class: (@section == 'animes_overview' ? 'active' : 'inactive')}
-      = link_to 'Overview', animes_overview_index_path
+  %li{role: "presentation", class: (@section == 'animes_overview' ? 'active' : 'inactive')}
+    = link_to 'Overview', animes_overview_index_path
 
-    - if user_signed_in? && current_user.is_admin
-      %li{role: "presentation", class: (@section == 'users' ? 'active' : 'inactive')}
-        = link_to 'Users', users_path
+  - if user_signed_in? && current_user.is_admin
+    %li{role: "presentation", class: (@section == 'users' ? 'active' : 'inactive')}
+      = link_to 'Users', users_path

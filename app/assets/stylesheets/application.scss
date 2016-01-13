@@ -29,8 +29,14 @@ th.action {
   background-color: #e8e8e8;
 }
 
-.login {
-  margin-right: 20px;
+.header {
+  margin-top: 5px;
+  padding-left: 5px;
+  border-bottom: 1px solid #337ab7;
+
+  .login {
+    margin-right: 20px;
+  }
 }
 
 .pagination {

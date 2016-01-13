@@ -6,6 +6,8 @@ class Anime < ActiveRecord::Base
   validates :name, :rating, presence: true
   validates :name, uniqueness:true, length:{maximum:50}
   validates :episodes, numericality: {greater_than: -1}
+  validates :ova_episodes, numericality: {greater_than: -1}
+  validates :special_episodes, numericality: {greater_than: -1}
   validates :rating, inclusion: {in: 0..6}
 
   # define max rating
@@ -35,7 +37,7 @@ class Anime < ActiveRecord::Base
   # def self.import(file)
   #   warnings = {unbekannte_genres: []}
   #   CSV.foreach(file.path, headers:true) do |row|
-  #     allowed_columns = %w(name genres episodes finished description comment rating)
+  #     allowed_columns = %w(name genres episodes ova_episodes special_episodes finished description comment rating)
   #     attributes = row.to_hash.keep_if{|key, _value| allowed_columns.include?(key)}
   #     attributes["genres"] = attributes["genres"].split(" / ").map do |genre_name|
   #       genre = Genre.find_by(name: genre_name)
@@ -58,7 +60,7 @@ class Anime < ActiveRecord::Base
 
 #import XLS
   def self.import(file, user)
-    permitted_columns = %w(name genres episodes finished comment description rating)
+    permitted_columns = %w(name genres episodes ova_episodes special_episodes finished comment description rating)
     warnings = {updated_animes: [], new_genres: [], animes_without_a_genre: []}
     params_hash = {}
 

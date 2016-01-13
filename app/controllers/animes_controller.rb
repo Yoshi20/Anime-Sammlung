@@ -45,6 +45,11 @@ class AnimesController < ApplicationController
           @animes = Anime.joins(:ratings).merge(Rating.group("ratings.anime_id").order("count(ratings.anime_id)")).where(id: @animes)
         elsif params[:sort] == 'my_rating'
           @animes = Anime.joins(:ratings).merge(Rating.where(user_id: current_user).order("ratings.rating")).order(:name)
+        elsif params[:sort] == 'episodes'
+          #blup: TODO -> episodes + ova_episodes
+          # a = @animes.map{|a| [{id: a.id, episodes: a.episodes + (a.ova_episodes || 0)}]}
+          # a = a.sort_by{|i| i[0][:episodes]}
+          @animes = @animes.order("animes.episodes")
         else
           @animes = @animes.order("animes.#{params[:sort]}")
         end
@@ -158,7 +163,7 @@ class AnimesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def anime_params
-      params.require(:anime).permit(:name, :episodes, :finished, :description, :comment, :rating, { genre_ids: []})
+      params.require(:anime).permit(:name, :episodes, :ova_episodes, :special_episodes, :finished, :description, :comment, :rating, { genre_ids: []})
     end
 
     def table_params

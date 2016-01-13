@@ -1,5 +1,4 @@
-%div
-  - flash.each do |key, value|
-    .alert.alert-dismissable{class: "#{flash_class(key)} fade in"}
-      = button_tag "&times;".html_safe, class: "close", data: {dismiss: "alert"}, aria: {hidden: true}
-      = value
+- flash.each do |key, value|
+  .alert.alert-dismissable{class: "#{flash_class(key)} fade in"}
+    = button_tag "&times;".html_safe, class: "close", data: {dismiss: "alert"}, aria: {hidden: true}
+    = value

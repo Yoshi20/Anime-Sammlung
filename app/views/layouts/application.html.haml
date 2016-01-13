@@ -9,20 +9,21 @@
 
   %body
     .wrapper.fixed-width
-      .row.col-md-12
+      .row.col-md-12.header
         -# navigator header
-        .col-md-6
+        .col-md-6.navigation-header
           = render '/layouts/navigation'
 
         -# login header
-        .col-md-6
+        .col-md-6.login-header
           = render '/layouts/login'
 
       -# flash notifications and alerts
-      .row.col-md-12.fixed-width
+      .row.col-md-12.fixed-width.flashes
         = render '/layouts/flashes'
 
       -# main content (index.html)
-      .container.content-wrapper
+      .container.content-wrapper{style: 'padding-top: 45px;'}
         .row.content
           = yield
+      }

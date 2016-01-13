@@ -45,7 +45,7 @@
       .add-anime-button
         = link_to 'Add Anime', new_anime_path, class:'btn btn-primary pull-right'
 
-.col-md-12{style: 'margin-bottom: 20px'}
+.col-md-12{style: 'margin-top: -25px; margin-bottom: 20px;'}
   - if user_signed_in? && current_user.is_admin?
     -# Import Animes
     .import-animes
@@ -56,6 +56,6 @@
 
 -# a random picture
 .myPicture.col-md-12
-  = link_to animes_path do
+  = link_to '' do
     = image_tag 'rainbow.png', class: 'pull-left mirrored'
     = image_tag 'rainbow.png', class: 'pull-right'

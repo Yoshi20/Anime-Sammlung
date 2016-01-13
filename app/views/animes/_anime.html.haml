@@ -6,7 +6,7 @@
     = anime.genres.order(:name).map(&:name).join(", ")
 
   %td.text-center
-    = anime.episodes
+    = anime.episodes #+ (anime.ova_episodes || 0)
 
   %td.text-center
     = check_box_tag '', '', anime.finished?, disabled: true

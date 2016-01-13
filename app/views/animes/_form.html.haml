@@ -1,4 +1,5 @@
-= form_for(@anime) do |f|
+= form_for @anime, role: 'form' do |f|
+
   - if @anime.errors.present?
     #error_explanation
       %h2= pluralize(@anime.errors.count, "error") + " prohibited this anime from being saved:"
@@ -6,41 +7,44 @@
         - @anime.errors.full_messages.each do |message|
           %li= message
 
-  .field.form-group
-    = f.label :name
-    %br
-    = f.text_field :name
-  
-  .field.form-group
-    = f.label :genres
-    %br
-    = f.collection_select :genre_ids, @genres, :id, :name, {}, {class:'selectpicker', multiple:true} 
-  
-  .field.form-group
-    = f.label :episodes
-    %br
-    = f.number_field :episodes, value:@anime.episodes, size:10
-  
-  .field.form-group
-    = f.label :finished
-    %br
-    = f.check_box :finished, value:@anime.finished
-  
-  .field.form-group
-    = f.label :description
-    %br
-    = f.text_area :description
-
-  .field.form-group
-    = f.label :comment
-    %br
-    = f.text_area :comment
-  
-  - if @anime.new_record?
+  .col-md-6
     .field.form-group
-      = f.label "Initial Rating"
-      %br
-      = f.number_field :rating, value:3, min:1, max:Anime::MAX_RATING, step:'any'
-  
-  .actions.form-group
-    = f.submit class:'btn btn-primary'
+      = f.label :name
+      = f.text_field :name, class: 'form-control'
+
+    .field.form-group
+      = f.label :genres
+      = f.collection_select :genre_ids, @genres, :id, :name, {}, {class: 'selectpicker form-control', multiple: true}
+
+    .col-md-12{style: 'padding: 0px 0px;'}
+      .field.form-group.col-md-4{style: 'padding-left: 0px;'}
+        = f.label :episodes
+        = f.number_field :episodes, value: @anime.episodes || 0, size: 10, class: 'form-control'
+
+      .field.form-group.col-md-4{style: 'padding-left: 0px;'}
+        = f.label :ova_episodes, 'OVAs'
+        = f.number_field :ova_episodes, value: @anime.ova_episodes || 0, size: 10, class: 'form-control'
+
+      .field.form-group.col-md-4{style: 'padding-left: 0px;'}
+        = f.label :special_episodes, 'Specials'
+        = f.number_field :special_episodes, value: @anime.special_episodes || 0, size: 10, class: 'form-control'
+
+    .field.form-group.form-inline
+      = f.label :finished
+      = f.check_box :finished, value: @anime.finished, class: 'form-control', style: 'width: 20px; height: 20px; margin-left: 15px; margin-bottom:  5px;'
+
+    .field.form-group
+      = f.label :description
+      = f.text_area :description, class: 'form-control', style: 'height: 110px;'
+
+    .field.form-group
+      = f.label :comment
+      = f.text_area :comment, class: 'form-control', style: 'height: 50px;'
+
+    - if @anime.new_record?
+      .field.form-group
+        = f.label "Initial Rating"
+        = f.number_field :rating, value: 3, min: 1, max: Anime::MAX_RATING, step: 'any', class: 'form-control'
+
+    .actions.form-group
+      = f.submit class:'btn btn-primary form-control'
