@@ -1,7 +1,7 @@
 class RatingsController < ApplicationController
   before_action :set_rating, only: [:update, :destroy]
   before_action :authenticate_user!, only: [:create, :update, :destroy]
-  after_action :update_anime_rating, only: [:create, :update, :destroy]
+  after_action :update_anime_rating, only: [:create, :update]
   before_action { @section = 'ratings' }
 
   # POST /ratings
@@ -38,6 +38,7 @@ class RatingsController < ApplicationController
   def destroy
     anime = @rating.anime
     @rating.destroy
+    anime.update({rating: anime.average_rating})
     flash[:notice] = "Your rating for '#{@rating.anime.name}' has been deleted."
     redirect_to anime_path(anime)
   end
@@ -50,8 +51,7 @@ class RatingsController < ApplicationController
 
     def update_anime_rating
       anime = @rating.nil? ? Anime.last : @rating.anime
-      anime.rating = anime.average_rating
-      anime.save
+      anime.update({rating: anime.average_rating})
     end
 
 end

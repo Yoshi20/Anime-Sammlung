@@ -69,7 +69,7 @@
     %div.col-md-1
       - if user_signed_in?
         -# update if already existing or create rating
-        .form{style: 'padding-left: 20px; margin-top: 110px;'}
+        .form{style: 'padding-left: 20px; margin-top: 50px;'}
           = form_for current_user.get_rating_for(@anime) || @anime.ratings.build do
             = hidden_field_tag :anime_id, @anime.id, id: "anime_id_#{@anime.id}", source: 'random_anime'
             - Anime::MAX_RATING.times do |x|
