@@ -23,9 +23,22 @@ class AnimesController < ApplicationController
 
       # handle params to limit selected animes
       if params[:order_by_letter].present?
-        @animes = @animes.where('animes.name LIKE ?', "#{params[:order_by_letter]}%")
-        if @animes.empty?
-          flash.now[:alert] = "There are no Animes that begin with the letter '#{params[:order_by_letter]}'."
+        if params[:order_by_letter] == '#'
+          # Get all animes which starts NOT with 'A'..'Z'
+          a = []
+          ('A'..'Z').each do |letter|
+            a << Anime.where("name LIKE ?", "#{letter}%").map(&:id)
+          end
+          a = a.flatten
+          @animes = @animes.where.not(id: a)
+           if @animes.empty?
+            flash.now[:alert] = "There are no Animes that begin with a special character."
+          end
+        else
+          @animes = @animes.where('animes.name LIKE ?', "#{params[:order_by_letter]}%")
+          if @animes.empty?
+            flash.now[:alert] = "There are no Animes that begin with the letter '#{params[:order_by_letter]}'."
+          end
         end
       end
 

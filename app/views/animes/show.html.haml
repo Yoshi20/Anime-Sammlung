@@ -1,10 +1,10 @@
 - if @anime.present?
-  .title-div
+  .row.title-div
     %h1
       = @anime.name
 
-  .col-md-12
-    %div.col-md-3{style: 'padding-left: 0px;'}
+  .row.show-anime
+    .col-md-3{style: 'padding-left: 0px;'}
       %div
         = image_tag @anime.try(:image_url), width: 220
 
@@ -16,7 +16,7 @@
         |
         = link_to 'Back', :back
 
-    %div.col-md-8{style: 'padding-left: 0px;'}
+    .col-md-8{style: 'padding-left: 0px;'}
       %p
         %strong Genre:
         = @anime.genres.map(&:name).join(', ')
@@ -44,29 +44,21 @@
         %strong Average Rating:
         = @anime.ratings.to_a.count.zero? ? '-' : @anime.average_rating
 
-      %p{style: 'margin-left: 15px;'}
+      %p
         %strong Number of Ratings:
         = @anime.ratings.to_a.count || 0
 
       - if user_signed_in?
-        %p{style: 'margin-left: 15px;'}
+        %p
           %strong My Rating:
           - rating = Rating.find_by(anime_id: @anime, user_id: current_user).try(:rating)
           = rating.present? ? rating : '-'
 
       %p
-        %strong Description:
-        = @anime.description || '-'
-
-      %p
-        %strong Comment:
-        = @anime.comment || '-'
-
-      %p
         %strong Anime added by:
         = @anime.user.present? ? @anime.user.username : '-'
 
-    %div.col-md-1
+    .col-md-1
       - if user_signed_in?
         -# update if already existing or create rating
         .form{style: 'padding-left: 20px; margin-top: 50px;'}
@@ -81,3 +73,16 @@
             - rating = Rating.find_by(user_id: current_user, anime_id: @anime)
             - if rating.present?
               = link_to 'Delete Rating', rating_path(rating), method: :delete, class: 'btn btn-danger btn-xs', style: "margin-left: -24px;"
+
+  .row.anime-text{style: 'margin-top: 10px;'}
+    - if @anime.comment.present?
+      .col-md-12
+        %p
+          %strong Comment:
+          = @anime.comment || '-'
+
+    - if @anime.description.present?
+      .col-md-12
+        %p
+          %strong Description:
+          = @anime.description || '-'

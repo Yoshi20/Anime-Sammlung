@@ -13,7 +13,7 @@
       = f.text_field :name, class: 'form-control'
 
     .field.form-group
-      = f.label :genres
+      = f.label :genres, 'Genres (use shift or ctrl to select multiple)'
       = f.collection_select :genre_ids, @genres, :id, :name, {}, {class: 'selectpicker form-control', multiple: true}
 
     .col-md-12{style: 'padding: 0px 0px;'}
@@ -34,16 +34,16 @@
       = f.check_box :finished, value: @anime.finished, class: 'form-control', style: 'width: 20px; height: 20px; margin-left: 15px; margin-bottom:  5px;'
 
     .field.form-group
-      = f.label :description
-      = f.text_area :description, class: 'form-control', style: 'height: 110px;'
+      = f.label :comment, 'Comment (short personal opinion)'
+      = f.text_area :comment, class: 'form-control', style: 'height: 50px;'
 
     .field.form-group
-      = f.label :comment
-      = f.text_area :comment, class: 'form-control', style: 'height: 50px;'
+      = f.label :description, 'Description (Plot Summary)'
+      = f.text_area :description, class: 'form-control', style: 'height: 110px;'
 
     - if @anime.new_record?
       .field.form-group
-        = f.label "Initial Rating"
+        = f.label :rating, "Initial Rating (6 = Best)"
         = f.number_field :rating, value: 3, min: 1, max: Anime::MAX_RATING, step: 'any', class: 'form-control'
 
     .actions.form-group

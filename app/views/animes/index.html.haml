@@ -1,61 +1,69 @@
-.title-div
-  %h1 Anime-List
+.row.title-div
+  %h1= "Anime-List"
 
-  .table-nav.col-md-12
-    -# Letter list
-    .letter-list.col-md-6
+.row.table-nav
+  -# Letter list
+  .col-md-6
+    .letter-list
       = link_to animes_path do
         - if params[:order_by_letter].present?
-          Alle
+          = "Alle"
         - else
-          %u Alle
+          %u= "Alle"
+
+      = link_to animes_path(order_by_letter: '#'), class: 'letter' do
+        - if params[:order_by_letter] == '#'
+          %u= '#'
+        - else
+          = '#'
 
       - ('A'.. 'Z').each do |letter|
         = link_to animes_path(order_by_letter: letter), class: 'letter' do
-          - if letter == params[:order_by_letter]
+          - if params[:order_by_letter] == letter
             %u= letter
           - else
             = letter
-          
-    -# search form
-    .search-form.col-md-6
-      .pull-right
-        = form_tag animes_path, method:'get', class: 'form-inline' do
-          = text_field_tag :search, params[:search], class: 'form-control'
-          = submit_tag 'Search', name:nil, class: 'form-control btn btn-default'
+
+  -# search form
+  .col-md-6
+    .search-form.pull-right
+      = form_tag animes_path, method:'get', class: 'form-inline' do
+        = text_field_tag :search, params[:search], class: 'form-control'
+        = submit_tag 'Search', name:nil, class: 'form-control btn btn-default'
 
 -# anime list
-.anime-list-with-paginator
-%table.table.table-striped
-  %thead.anime-list-header
-    = render "anime_list_header"
+.row.anime-list
+  %table.table.table-striped
+    %thead.anime-list-header
+      = render "anime_list_header"
 
-  %tbody.anime-list
-    = render @animes
+    %tbody.anime-list-body
+      = render @animes
 
-.col-md-12
-  -# pageinator
-  .col-md-10
-    - if @animes.any?
-      = render 'paginator'
+  .row.anime-list-footer
+    -# pageinator
+    .col-md-5
+      - if @animes.any?
+        = render 'paginator'
 
-  -# 'Add Anime' button
-  .col-md-2
-    - if user_signed_in?
-      .add-anime-button
-        = link_to 'Add Anime', new_anime_path, class:'btn btn-primary pull-right'
-
-.col-md-12{style: 'margin-top: -25px; margin-bottom: 20px;'}
-  - if user_signed_in? && current_user.is_admin?
     -# Import Animes
-    .import-animes
-      %h2 Import Animes
-      = form_tag import_animes_path, multipart:true do
-        = file_field_tag :file, style: 'display: inline'
-        = submit_tag "Import", class:'btn btn-primary'
+    .col-md-5
+      - if user_signed_in? && current_user.is_admin?
+        %h3{style: 'margin-top: -27px; margin-bottom: 0px;'}
+          = "Import Animes"
+        = form_tag import_animes_path, multipart:true do
+          = file_field_tag :file, style: 'display: inline'
+          = submit_tag "Import", class:'btn btn-primary'
 
--# a random picture
-.myPicture.col-md-12
-  = link_to '' do
-    = image_tag 'rainbow.png', class: 'pull-left mirrored'
-    = image_tag 'rainbow.png', class: 'pull-right'
+    -# 'Add Anime' button
+    .col-md-2
+      - if user_signed_in?
+        .add-anime-button
+          = link_to 'Add Anime', new_anime_path, class:'btn btn-primary pull-right'
+
+.row.content-footer{style: 'margin-top: -25px; margin-bottom: 20px;'}
+  -# Random pictures
+  .col-md-12
+    = link_to '' do
+      = image_tag 'rainbow.png', class: 'pull-left mirrored'
+      = image_tag 'rainbow.png', class: 'pull-right'

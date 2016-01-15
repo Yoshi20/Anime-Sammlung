@@ -13,7 +13,7 @@ $ ->
     data = {order: newOrder, page: paramsHash.page}
     successCallback = (response) ->
       console.log("success: get animes ajax request")
-      $('.anime-list').html(response.animes)
+      $('.anime-list-body').html(response.animes)
       window.history.pushState('params', 'Animes', '/animes?' + response.params)
     getAnimesAjaxRequest(url, data, successCallback)
 
@@ -59,7 +59,7 @@ $ ->
       data = {sort: paramsHash.sort, order: paramsHash.order}
       successCallback = (response) ->
         console.log("success: get animes ajax request")
-        $('.anime-list').html(response.animes)
+        $('.anime-list-body').html(response.animes)
         window.history.pushState('params', 'Animes', '/animes?' + response.params)
         $(target).closest('ul').find('.active').removeClass('active')
         $(target).closest('li').addClass('active')

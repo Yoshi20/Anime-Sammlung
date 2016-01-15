@@ -3,27 +3,29 @@
   %head
     %title Anime-List
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
-    -# on Windows: use defaults instead of application
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
 
   %body
     .wrapper.fixed-width
-      .row.col-md-12.header
-        -# navigator header
-        .col-md-6.navigation-header
-          = render '/layouts/navigation'
+      .row.header
+        .col-md-12
+          -# navigator header
+          .col-md-6
+            .row.navigation-header
+              = render '/layouts/navigation'
 
-        -# login header
-        .col-md-6.login-header
-          = render '/layouts/login'
+          -# login header
+          .col-md-6
+            .row.login-header
+              = render '/layouts/login'
 
       -# flash notifications and alerts
-      .row.col-md-12.fixed-width.flashes
-        = render '/layouts/flashes'
+      .row.flashes
+        .col-md-12.fixed-width
+          = render '/layouts/flashes'
 
       -# main content (index.html)
-      .container.content-wrapper{style: 'padding-top: 45px;'}
+      .container.content-wrapper
         .row.content
           = yield
-      }

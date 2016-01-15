@@ -1,9 +1,11 @@
 %h1 New Anime
 
-.col-md-12
-  = render 'form'
+.row.form
+  .col-md-12
+    = render 'form'
 
-.col-md-12{style: 'margin-left: 15px;'}
-  = link_to 'Animes', animes_path
-  |
-  = link_to 'Back', :back
+.row.new-anime-footer
+  .col-md-12{style: 'margin-left: 15px;'}
+    = link_to 'Animes', animes_path
+    |
+    = link_to 'Back', :back

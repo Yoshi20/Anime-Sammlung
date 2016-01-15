@@ -4,6 +4,7 @@
 %table.table.table-striped
   %thead
     %tr
+      %th.text-center #
       %th Image
       %th Name
       %th Genres
@@ -17,6 +18,6 @@
         %th.action
    
   %tbody
-    - @animes.each do |anime|
-      = render 'top10', anime: anime
+    - @animes.each_with_index do |anime, index|
+      = render 'top10', anime: anime, index: index
       

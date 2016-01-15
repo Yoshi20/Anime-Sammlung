@@ -8,8 +8,8 @@ class RatingsController < ApplicationController
   def create
     if params[:rating].present?
       if params[:anime_id].present?
-        a_id = params[:anime_id]
-        r_val = params[:rating]
+        a_id = params[:anime_id].to_i
+        r_val = params[:rating].to_i
         new_rating = Rating.create({anime_id: a_id, user: current_user, rating: r_val})
         flash[:success] = "Your rating for '#{new_rating.anime.name}' has been saved."
       else
@@ -24,8 +24,8 @@ class RatingsController < ApplicationController
   # PATCH/PUT /ratings/1
   def update
     if params[:rating].present?
-      r = Rating.find_by(anime:@rating.anime, user:current_user)
-      r.rating = params[:rating]
+      r = Rating.find_by(anime: @rating.anime, user: current_user)
+      r.rating = params[:rating].to_i
       r.save
       flash[:success] = "Your rating for '#{@rating.anime.name}' has been updated."
     else
