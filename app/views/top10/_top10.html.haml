@@ -3,7 +3,7 @@
     = "##{index+1}"
 
   %td
-    = image_tag anime.try(:image_url), width: 200, height: 250
+    = image_tag anime.try(:image_path), width: 200, height: 250
 
   %td{style: 'vertical-align: middle'}
     = link_to anime.name, anime

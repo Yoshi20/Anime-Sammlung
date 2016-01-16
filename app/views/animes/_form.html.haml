@@ -43,8 +43,8 @@
 
     - if @anime.new_record?
       .field.form-group
-        = f.label :rating, "Initial Rating (6 = Best)"
-        = f.number_field :rating, value: 3, min: 1, max: Anime::MAX_RATING, step: 'any', class: 'form-control'
+        = f.label :rating, "Initial Rating (6 = Best, 1 = Worst, 0 = Not seen yet)"
+        = f.number_field :rating, value: 3, min: 0, max: Anime::MAX_RATING, step: 'any', class: 'form-control'
 
     .actions.form-group
       = f.submit class:'btn btn-primary form-control'

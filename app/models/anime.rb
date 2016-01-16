@@ -10,14 +10,19 @@ class Anime < ActiveRecord::Base
   validates :special_episodes, numericality: {greater_than: -1}
   validates :rating, inclusion: {in: 0..6}
 
-  # define max rating
   MAX_RATING = 6
 
   # chia-anime image-url
-  def image_url
-    url = 'http://cdn.chia-anime.tv/content/cache2/'
-    url += self.name.gsub(' ', '-')
-    url += '.jpg'
+  def image_path
+    anime_image_path = 'animes/'
+    anime_image_path += self.name.gsub(' ', '-').gsub('/', '').gsub('.', '').gsub(':', '-')
+    anime_image_path += '.jpg'
+
+    if File.file?('app/assets/images/' + anime_image_path)
+      anime_image_path
+    else
+      'animes/_No_Photo_Available.jpg'
+    end
   end
 
   # to add the name into the url

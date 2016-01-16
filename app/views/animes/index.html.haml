@@ -49,11 +49,12 @@
     -# Import Animes
     .col-md-5
       - if user_signed_in? && current_user.is_admin?
-        %h3{style: 'margin-top: -27px; margin-bottom: 0px;'}
-          = "Import Animes"
-        = form_tag import_animes_path, multipart:true do
-          = file_field_tag :file, style: 'display: inline'
-          = submit_tag "Import", class:'btn btn-primary'
+        .import-anime
+          %h3{style: 'margin-top: 0px; margin-bottom: 0px;'}
+            = "Import Animes"
+          = form_tag import_animes_path, multipart:true do
+            = file_field_tag :file, style: 'display: inline'
+            = submit_tag "Import", class: 'btn btn-primary', style: 'margin-top: -25px;'
 
     -# 'Add Anime' button
     .col-md-2

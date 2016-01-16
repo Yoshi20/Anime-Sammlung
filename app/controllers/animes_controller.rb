@@ -118,7 +118,9 @@ class AnimesController < ApplicationController
     @anime.user = current_user
     respond_to do |format|
       if @anime.save
-        Rating.create({anime_id: @anime.id, user_id: current_user.try(:id), rating: @anime.rating})
+        unless @anime.rating == 0
+          Rating.create({anime_id: @anime.id, user_id: current_user.try(:id), rating: @anime.rating})
+        end
         format.html { redirect_to @anime, notice: 'Anime was successfully created.' }
         format.json { render :show, status: :created, location: @anime }
       else
