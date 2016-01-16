@@ -13,8 +13,8 @@ Run bash on the server
 * <tt>$ heroku run bash</tt>
 
 Download db-backup from the server
-* <tt>$ heroku pg:backups capture
-$ curl -o latest.dump `heroku pg:backups public-url`</tt>
+* <tt>$ heroku pg:backups capture</tt>
+* <tt>$ curl -o latest.dump `heroku pg:backups public-url`</tt>
 
 Restor db to local db
 * <tt>$ pg_restore --verbose --clean --no-acl --no-owner -h localhost -U <myuser> -d anime_list_development latest.dump</tt>
