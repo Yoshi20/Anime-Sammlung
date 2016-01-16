@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
 
   #define number of items per page to paginate
   def get_number_of_items_per_page
-    20
+    30
   end
 
   protected
