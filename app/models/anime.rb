@@ -1,5 +1,6 @@
 class Anime < ActiveRecord::Base
   has_and_belongs_to_many :genres
+  has_and_belongs_to_many :target_audience
   belongs_to :user
   has_many :ratings, dependent: :destroy
 
@@ -15,7 +16,7 @@ class Anime < ActiveRecord::Base
   # chia-anime image-url
   def image_path
     anime_image_path = 'animes/'
-    anime_image_path += self.name.gsub(' ', '-').gsub('/', '').gsub('.', '').gsub(':', '-')
+    anime_image_path += self.name.gsub(' ', '-').gsub('/', '').gsub('.', '').gsub(':', '-').gsub('%', '')
     anime_image_path += '.jpg'
 
     if File.file?('app/assets/images/' + anime_image_path)

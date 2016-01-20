@@ -10,7 +10,7 @@ namespace :get_images do
     BASE_URL = 'http://cdn.chia-anime.tv/content/cache2/'
     animes = Anime.all
     animes.each do |anime|
-      anime_name = anime.name.gsub(' ', '-').gsub('/', '').gsub('.', '').gsub(':', '-')
+      anime_name = anime.name.gsub(' ', '-').gsub('/', '').gsub('.', '').gsub(':', '-').gsub('%', '')
       puts anime.name + '->' + anime_name
       anime_image_path = IMG_PATH + anime_name + IMG_TYPE
       # create only if file does not exist yet

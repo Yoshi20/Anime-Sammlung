@@ -1,12 +1,16 @@
 %tr
   %td
-    = image_tag anime.try(:image_path), width: 62, height: 75
+    = link_to anime_path(anime) do
+      = image_tag anime.try(:image_path), width: 62, height: 75
 
   %td
     = link_to anime.name, anime
 
   %td
-    = anime.genres.order(:name).map(&:name).join(", ")
+    = anime.target_audience.order(:name).map(&:name).join(', ')
+
+  %td
+    = anime.genres.order(:name).map(&:name).join(', ')
 
   %td.text-center
     = anime.episodes #+ (anime.ova_episodes || 0)
@@ -14,7 +18,7 @@
   %td.text-center
     = check_box_tag '', '', anime.finished?, disabled: true
 
-  %td
+  %td.hidden-md.hidden-sm.hidden-xs
     = truncate(anime.comment, length: 50)
 
   %td.text-center
@@ -40,8 +44,12 @@
           = label_tag "anime_rating_#{anime.id}_#{x}", x+1
         = submit_tag 'Rate', class:'btn btn-primary btn-xs'
 
-  %td.text-center{style: 'vertical-align: middle'}
+  %td.text-center
     - if user_signed_in?
-      = link_to 'Edit', edit_anime_path(anime), class:'btn btn-default btn-xs'
+      = link_to anime_path(anime), class:'btn btn-default btn-xs' do
+        %span.glyphicon.glyphicon-eye-open
+      = link_to edit_anime_path(anime), class:'btn btn-default btn-xs' do
+        %span.glyphicon.glyphicon-pencil
       - if (anime.user == current_user) || current_user.is_admin
-        = link_to 'Destroy', anime, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs'
+        = link_to anime, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-default btn-xs' do
+          %span.glyphicon.glyphicon-trash

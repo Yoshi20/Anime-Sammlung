@@ -3,6 +3,8 @@
   %th
     = link_to 'Name', animes_path(table_params.merge(sort: 'name')), data: {order: 'asc'}
   %th
+    Target Audience
+  %th
     .genre-select
       = form_tag animes_path, method:'get' do
         = link_to 'Genres', animes_path(table_params.merge(sort: 'genres')), data: {order: 'asc'}
@@ -12,7 +14,7 @@
     = link_to 'Episodes', animes_path(table_params.merge(sort: 'episodes')), data: {order: 'asc'}
   %th.text-center
     Finished
-  %th
+  %th.hidden-md.hidden-sm.hidden-xs
     Comment
   %th.text-center
     = link_to '# Rated', animes_path(table_params.merge(sort: 'number_of_ratings')), data: {order: 'asc'}

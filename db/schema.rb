@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160113170110) do
+ActiveRecord::Schema.define(version: 20160120211010) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,14 @@ ActiveRecord::Schema.define(version: 20160113170110) do
   add_index "animes_genres", ["anime_id"], name: "index_animes_genres_on_anime_id", using: :btree
   add_index "animes_genres", ["genre_id"], name: "index_animes_genres_on_genre_id", using: :btree
 
+  create_table "animes_target_audience", id: false, force: :cascade do |t|
+    t.integer "anime_id"
+    t.integer "target_audience_id"
+  end
+
+  add_index "animes_target_audience", ["anime_id"], name: "index_animes_target_audience_on_anime_id", using: :btree
+  add_index "animes_target_audience", ["target_audience_id"], name: "index_animes_target_audience_on_target_audience_id", using: :btree
+
   create_table "genres", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
@@ -50,6 +58,12 @@ ActiveRecord::Schema.define(version: 20160113170110) do
     t.integer  "anime_id"
     t.integer  "user_id"
     t.integer  "rating"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "target_audience", force: :cascade do |t|
+    t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

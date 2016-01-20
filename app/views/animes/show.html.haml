@@ -54,9 +54,9 @@
           - rating = Rating.find_by(anime_id: @anime, user_id: current_user).try(:rating)
           = rating.present? ? rating : '-'
 
-      %p
-        %strong Anime added by:
-        = @anime.user.present? ? @anime.user.username : '-'
+        %p
+          %strong Anime added by:
+          = @anime.user.present? ? @anime.user.username : '-'
 
     .col-md-1
       - if user_signed_in?
