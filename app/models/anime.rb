@@ -144,7 +144,7 @@ class Anime < ActiveRecord::Base
       ratings << new_rating if new_rating.present?
       sum = ratings.sum
       avr = sum.to_f/count
-      avr.round(2)
+      avr.round(1)
     end
   end
 

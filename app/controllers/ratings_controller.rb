@@ -10,7 +10,7 @@ class RatingsController < ApplicationController
       if params[:anime_id].present?
         a_id = params[:anime_id].to_i
         r_val = params[:rating].to_i
-        new_rating = Rating.create({anime_id: a_id, user: current_user, rating: r_val})
+        new_rating = Rating.create!({anime_id: a_id, user: current_user, rating: r_val})
         flash[:success] = "Your rating for '#{new_rating.anime.name}' has been saved."
       else
         flash[:alert] = "There's no Anime id! :,O"
@@ -18,20 +18,38 @@ class RatingsController < ApplicationController
     else
       flash[:alert] = "You have to choose a rating to rate!"
     end
-    redirect_to animes_path
+
+    respond_to do |format|
+      format.html {
+        redirect_to animes_path
+      }
+      format.json {
+        avg_rating = Anime.find(params[:anime_id]).average_rating
+        render json: { success: true, rating_id: new_rating.id, avg_rating: avg_rating }, status: :ok
+      }
+    end
   end
 
   # PATCH/PUT /ratings/1
   def update
     if params[:rating].present?
-      r = Rating.find_by(anime: @rating.anime, user: current_user)
-      r.rating = params[:rating].to_i
-      r.save
+      r_val = params[:rating].to_i
+      @rating.rating = r_val
+      @rating.save!
       flash[:success] = "Your rating for '#{@rating.anime.name}' has been updated."
     else
       flash[:alert] = "To rate for '#{@rating.anime.name}' choose a rating first!"
     end
-    redirect_to animes_path
+
+    respond_to do |format|
+      format.html {
+        redirect_to animes_path
+      }
+      format.json {
+        avg_rating = @rating.anime.average_rating
+        render json: { success: true, avg_rating: avg_rating }, status: :ok
+      }
+    end
   end
 
   # DELETE /ratings/1
@@ -50,8 +68,8 @@ class RatingsController < ApplicationController
     end
 
     def update_anime_rating
-      anime = @rating.nil? ? Anime.last : @rating.anime
-      anime.update(rating: anime.average_rating)
+      anime = @rating.nil? ? Anime.find(params[:anime_id]) : @rating.anime
+      anime.update!(rating: anime.average_rating)
     end
 
 end

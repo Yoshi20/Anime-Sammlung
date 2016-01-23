@@ -21,29 +21,29 @@
   %td.hidden-md.hidden-sm.hidden-xs
     = truncate(anime.comment, length: 50)
 
-  %td.text-center
+  %td.text-center.ratings-count
     = anime.ratings.to_a.count
 
-  %td.text-center
+  %td.text-center.avg-rating
     = anime.rating
 
   - if user_signed_in?
-    %td.text-center
+    %td.text-center.my-rating
       - my_rating = current_user.get_rating_for(anime).try(:rating)
       = my_rating.present? ? my_rating : '-'
   
-  %td.text-center
+  %td.text-center.ratings
     - if user_signed_in?
       -# update if already existing or create rating
       = form_for current_user.get_rating_for(anime) || anime.ratings.build do
-        = hidden_field_tag :anime_id, anime.id, id: "anime_id_#{anime.id}"
+        = hidden_field_tag :anime_id, anime.id, id: "anime_id_#{anime.id}", class: 'hidden-anime-id'
         - Anime::MAX_RATING.times do |x|
           - my_rating = current_user.get_rating_for(anime).try(:rating)
           = radio_button_tag :rating, x+1, (x+1) == my_rating, {id: "anime_rating_#{anime.id}_#{x}"}
           = label_tag "anime_rating_#{anime.id}_#{x}", x+1
         = submit_tag 'Rate', class:'btn btn-primary btn-xs'
 
-  %td.text-center
+  %td.text-center.actions
     - if user_signed_in?
       = link_to anime_path(anime), class:'btn btn-default btn-xs' do
         %span.glyphicon.glyphicon-eye-open

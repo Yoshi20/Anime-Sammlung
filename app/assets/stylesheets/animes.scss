@@ -16,3 +16,17 @@
 .anime-list-body tr td {
   vertical-align: middle !important;
 }
+
+.genres {
+  width: 10%;
+}
+
+.actions {
+  width: 4%;
+  a {
+    display: block;
+    width: 25px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+}

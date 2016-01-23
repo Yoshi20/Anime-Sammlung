@@ -1,5 +1,5 @@
 $ ->
-  # click on a column-header anchortag to sort and order the list -> ajax request
+  # a click on a column-header anchortag sends an ajax-request to sort and order the list
   $('.anime-list-header').on 'click', 'a', (e) ->
     e.preventDefault()
     url = $(this).attr('href')
@@ -76,6 +76,37 @@ $ ->
         $(target).closest('li').addClass('active')
 
       getAnimesAjaxRequest(url, data, successCallback)
+
+  # a click on a rating sends an ajax-request and creates or updates a rating
+  $('.anime-list').on 'click', '.ratings input[type=radio]', (e) ->
+    e.preventDefault()
+    $t = $(this)
+    $form = $t.closest('form')
+    url = $form.attr('action')
+    data =
+      rating: $t.attr('value')
+      anime_id: $form.find('.hidden-anime-id').attr('value')
+    $.ajax
+      method: if $form.hasClass('edit_rating') then 'patch' else 'post'
+      url: url
+      data: data
+      dataType: 'json'
+      error: ->
+        console.log("error: set rating ajax request")
+      success: (response) ->
+        $t.prop('checked', true)
+        $tr = $form.closest('tr')
+        if response.rating_id
+          # new rating created
+          $form.removeClass('new_rating').addClass('edit_rating')
+          $form.attr('action', url + '/' + response.rating_id)
+          ratingsCount = parseInt($tr.find('.ratings-count').text())
+          $tr.find('.ratings-count').text(ratingsCount+1)
+        $tr.find('.avg-rating').text(response.avg_rating.toFixed(1))
+        $tr.find('.my-rating').text(data.rating)
+
+  # hide the rate submit buttons
+  $('.ratings input[type=submit]').hide()
 
 # function to get the current url params as hash
 getParamsAsHash = ->
