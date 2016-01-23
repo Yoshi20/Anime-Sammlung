@@ -28,6 +28,17 @@ $ ->
   # adds a blank selection to the genre selection (first selection)
   $('.genre-select select').prop 'selectedIndex', -1 if urlParamExists("genre_id") is -1
 
+  # handle target_audience selection
+  $('.anime-list-header').on 'change', '.target-audience-select select', (e) ->
+    form = $(this).closest('form')
+    form.submit()
+
+  # hide target_audience selection submit button
+  $('.target-audience-select form input[type=submit]').hide()
+
+  # adds a blank selection to the target_audience selection (first selection)
+  $('.target-audience-select select').prop 'selectedIndex', -1 if urlParamExists("target_audience_id") is -1
+
   # paginator -> ajax request
   $('.pagination').on 'click', 'a', (e) ->
     e.preventDefault()

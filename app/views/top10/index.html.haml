@@ -4,20 +4,19 @@
 %table.table.table-striped
   %thead
     %tr
-      %th.text-center #
-      %th Image
+      %th
+      %th
       %th Name
+      %th Target Audience
       %th Genres
       %th.text-center Episodes
       %th.text-center Finished
-      %th Comment
+      %th.hidden-md.hidden-sm.hidden-xs Comment
       %th.text-center # Rated
       %th.text-center Ø Rating
       - if user_signed_in?
         %th.text-center My Rating
-        %th.action
    
   %tbody
     - @animes.each_with_index do |anime, index|
       = render 'top10', anime: anime, index: index
-      

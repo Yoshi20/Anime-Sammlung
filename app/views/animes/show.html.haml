@@ -18,7 +18,11 @@
 
     .col-md-8{style: 'padding-left: 0px;'}
       %p
-        %strong Genre:
+        %strong Target Audience:
+        = @anime.target_audience.map(&:name).join(', ')
+
+      %p
+        %strong Genres:
         = @anime.genres.map(&:name).join(', ')
 
       %p

@@ -5,7 +5,7 @@ class Anime < ActiveRecord::Base
   has_many :ratings, dependent: :destroy
 
   validates :name, :rating, presence: true
-  validates :name, uniqueness:true, length:{maximum:50}
+  validates :name, uniqueness: true, length: {maximum:50}
   validates :episodes, numericality: {greater_than: -1}
   validates :ova_episodes, numericality: {greater_than: -1}
   validates :special_episodes, numericality: {greater_than: -1}
@@ -33,7 +33,7 @@ class Anime < ActiveRecord::Base
 
   def self.search(search)
     if search
-      where('name LIKE ? or name LIKE ? or name LIKE ?', "%#{search}%", "%#{search.capitalize}%", "%#{search.titleize}%")
+      where('name ILIKE ?', "%#{search}%")
     else
       :all
     end

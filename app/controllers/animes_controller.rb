@@ -1,6 +1,7 @@
 class AnimesController < ApplicationController
   before_action :set_anime, only: [:show, :edit, :update, :destroy]
-  before_action :get_genres, only: [:index, :new, :edit, :create]
+  before_action :get_genres, only: [:index, :new, :edit, :create, :update]
+  before_action :get_target_audience, only: [:index, :new, :edit, :create, :update]
   before_action :authenticate_user!, only: [:edit, :create, :update, :destroy]
   before_action { @section = 'animes' }
 
@@ -8,7 +9,7 @@ class AnimesController < ApplicationController
   # GET /animes.json
   def index
     # get animes
-    @animes = Anime.includes(:genres, :ratings).all
+    @animes = Anime.includes(:target_audience, :genres, :ratings).all
 
     if @animes.empty?
       flash.now[:alert] = "There are no Animes to list."
@@ -49,15 +50,25 @@ class AnimesController < ApplicationController
         end
       end
 
+      if params[:target_audience_id].present?
+        @animes = @animes.joins(:target_audience).where(target_audience: {id: params[:target_audience_id].to_i})
+        if @animes.empty?
+          flash.now[:alert] = "There are no Animes with the target audience '#{TargetAudience.find(params[:target_audience_id].to_i).name}'."
+        end
+      end
+
       # handle parameters to sort and order
       if params[:sort].present?
         if params[:sort] == 'genres'
           @animes = @animes.joins(:genres).merge(Genre.order("genres.name"))
+        elsif params[:sort] == 'target_audience'
+          @animes = @animes.joins(:target_audience).merge(TargetAudience.order("target_audience.name"))
         elsif params[:sort] == 'number_of_ratings'
           #blup: TODO -> number_of_ratings & my_ratings korrigieren/verbessern
           @animes = Anime.joins(:ratings).merge(Rating.group("ratings.anime_id").order("count(ratings.anime_id)")).where(id: @animes)
         elsif params[:sort] == 'my_rating'
-          @animes = Anime.joins(:ratings).merge(Rating.where(user_id: current_user).order("ratings.rating")).order(:name)
+          @animes = Anime.joins(:ratings).merge(Rating.where(user_id: current_user).order("ratings.rating"))
+          @animes = params[:order] == 'desc' ? @animes.order(name: :desc) : @animes.order(:name)
         elsif params[:sort] == 'episodes'
           #blup: TODO -> episodes + ova_episodes
           # a = @animes.map{|a| [{id: a.id, episodes: a.episodes + (a.ova_episodes || 0)}]}
@@ -133,7 +144,7 @@ class AnimesController < ApplicationController
   # PATCH/PUT /animes/1
   # PATCH/PUT /animes/1.json
   def update
-    anime_params.delete(:rating) # do not allow a new rating
+    anime_params.delete(:rating) # do not allow a new rating via update
     respond_to do |format|
       if @anime.update(anime_params)
         if @anime.user != current_user
@@ -142,7 +153,6 @@ class AnimesController < ApplicationController
         format.html { redirect_to @anime, notice: 'Anime was successfully updated.' }
         format.json { render :show, status: :ok, location: @anime }
       else
-        get_genres()
         format.html { render :edit }
         format.json { render json: @anime.errors, status: :unprocessable_entity }
       end
@@ -176,9 +186,13 @@ class AnimesController < ApplicationController
       @genres = Genre.all.order(:name)
     end
 
+    def get_target_audience
+      @target_audience = TargetAudience.all.order(:name)
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def anime_params
-      params.require(:anime).permit(:name, :episodes, :ova_episodes, :special_episodes, :finished, :description, :comment, :rating, { genre_ids: []})
+      params.require(:anime).permit(:name, :episodes, :ova_episodes, :special_episodes, :finished, :description, :comment, :rating, { genre_ids: []}, { target_audience_ids: []})
     end
 
     def table_params

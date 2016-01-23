@@ -11,6 +11,7 @@ namespace :export do
     format_titelzeile = Spreadsheet::Format.new(weight: :bold)
     anime_attributes = [
       :name,
+      :target_audience,
       :genres,
       :episodes,
       :finished,
@@ -26,6 +27,8 @@ namespace :export do
       anime_attributes.each_with_index do |field, field_index|
         if field == :genres
           sheet[anime_index + 1, field_index] = anime.genres.map(&:name).join(', ')
+        elsif field == :target_audience
+          sheet[anime_index + 1, field_index] = anime.target_audience.map(&:name).join(', ')
         elsif field == :rating
           # get my rating not the average rating
           sheet[anime_index + 1, field_index] = Rating.find_by(anime_id: anime, user_id: 1).try(:rating)

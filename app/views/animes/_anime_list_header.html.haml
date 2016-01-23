@@ -3,12 +3,16 @@
   %th
     = link_to 'Name', animes_path(table_params.merge(sort: 'name')), data: {order: 'asc'}
   %th
-    Target Audience
+    .target-audience-select
+      = form_tag animes_path, method:'get' do
+        = link_to 'Target Audience', animes_path(table_params.merge(sort: 'target_audience')), data: {order: 'asc'}
+        = select_tag :target_audience_id, options_from_collection_for_select(@target_audience, 'id', 'name', params[:target_audience_id]), prompt: 'all'
+        = submit_tag "Sort"
   %th
     .genre-select
       = form_tag animes_path, method:'get' do
         = link_to 'Genres', animes_path(table_params.merge(sort: 'genres')), data: {order: 'asc'}
-        = select_tag :genre_id, options_from_collection_for_select(@genres, 'id', 'name', params[:genre_id])
+        = select_tag :genre_id, options_from_collection_for_select(@genres, 'id', 'name', params[:genre_id]), prompt: 'all'
         = submit_tag "Sort"
   %th.text-center
     = link_to 'Episodes', animes_path(table_params.merge(sort: 'episodes')), data: {order: 'asc'}
