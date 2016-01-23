@@ -58,18 +58,24 @@ class AnimesController < ApplicationController
       end
 
       # handle parameters to sort and order
-      if params[:sort].present?
-        if params[:sort] == 'genres'
+      sort = params[:sort]
+      if sort.present?
+        if sort == 'genres'
+          #blup: TODO -> animes ohne genres hinzufügen
           @animes = @animes.joins(:genres).merge(Genre.order("genres.name"))
-        elsif params[:sort] == 'target_audience'
+        elsif sort == 'target_audience'
           @animes = @animes.joins(:target_audience).merge(TargetAudience.order("target_audience.name"))
-        elsif params[:sort] == 'number_of_ratings'
+        elsif sort == 'number_of_ratings'
           @animes = Anime.joins(:ratings).merge(Rating.group("animes.id, ratings.anime_id").order("count(ratings.anime_id)")).where(id: @animes)
-        elsif params[:sort] == 'my_rating'
-          #blup: TODO -> my_ratings korrigieren/verbessern
+        elsif sort == 'rating'
+          @animes = @animes.order("animes.rating")
+          @animes = params[:order] == 'desc' ? @animes.order(name: :desc) : @animes.order(:name)
+        elsif sort == 'my_rating'
+          #blup: TODO -> animes ohne my_ratings hinzufügen
+          # @animes = Anime.joins("left join ratings on ratings.anime_id = animes.id").merge(Rating.where(user_id: current_user).order("ratings.rating"))
           @animes = Anime.joins(:ratings).merge(Rating.where(user_id: current_user).order("ratings.rating"))
           @animes = params[:order] == 'desc' ? @animes.order(name: :desc) : @animes.order(:name)
-        elsif params[:sort] == 'episodes'
+        elsif sort == 'episodes'
           #blup: TODO -> episodes + ova_episodes
           # a = @animes.map{|a| [{id: a.id, episodes: a.episodes + (a.ova_episodes || 0)}]}
           # a = a.sort_by{|i| i[0][:episodes]}

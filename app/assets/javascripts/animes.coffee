@@ -12,9 +12,9 @@ $ ->
     paramsHash = getParamsAsHash()
     data = {order: newOrder, page: paramsHash.page}
     successCallback = (response) ->
-      console.log("success: get animes ajax request")
       $('.anime-list-body').html(response.animes)
       window.history.pushState('params', 'Animes', '/animes?' + response.params)
+      hideRateButtons()
     getAnimesAjaxRequest(url, data, successCallback)
 
   # handle genre selection
@@ -69,12 +69,11 @@ $ ->
       paramsHash = getParamsAsHash()
       data = {sort: paramsHash.sort, order: paramsHash.order}
       successCallback = (response) ->
-        console.log("success: get animes ajax request")
         $('.anime-list-body').html(response.animes)
         window.history.pushState('params', 'Animes', '/animes?' + response.params)
         $(target).closest('ul').find('.active').removeClass('active')
         $(target).closest('li').addClass('active')
-
+        hideRateButtons()
       getAnimesAjaxRequest(url, data, successCallback)
 
   # a click on a rating sends an ajax-request and creates or updates a rating
@@ -105,7 +104,10 @@ $ ->
         $tr.find('.avg-rating').text(response.avg_rating.toFixed(1))
         $tr.find('.my-rating').text(data.rating)
 
-  # hide the rate submit buttons
+  hideRateButtons()
+
+# hide the rate submit buttons
+hideRateButtons = ->
   $('.ratings input[type=submit]').hide()
 
 # function to get the current url params as hash
