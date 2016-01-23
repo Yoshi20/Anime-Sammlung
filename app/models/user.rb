@@ -14,6 +14,8 @@ class User < ActiveRecord::Base
 
   validate :validate_username
 
+  before_destroy :delete_user_id_on_animes
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   # run rake db:migrate after a change
@@ -55,6 +57,16 @@ class User < ActiveRecord::Base
     # Rating.find_by(user_id: self, anime_id: anime)
     @_all_ratings ||= ratings.to_a
     @_all_ratings.select{|r| r.anime == anime}.first
+  end
+
+  def delete_user_id_on_animes
+    animes_this_user_created = []
+    self.animes.each do |anime|
+      anime.update(user_id: nil)
+      animes_this_user_created << anime.name
+    end
+    puts 'The User you deleted, added the following animes:'
+    puts animes_this_user_created.joins(", ")
   end
 
 end

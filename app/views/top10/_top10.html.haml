@@ -28,8 +28,8 @@
     = anime.ratings.to_a.count
 
   %td.text-center{style: 'vertical-align: middle'}
-    - rating = anime.average_rating
-    = rating.present? ? rating : '-'
+    %strong
+      = anime.rating
 
   - if user_signed_in?
     %td.text-center{style: 'vertical-align: middle'}
