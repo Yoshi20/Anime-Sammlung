@@ -12,6 +12,7 @@ class Anime < ActiveRecord::Base
   validates :rating, inclusion: {in: 0..6}
 
   MAX_RATING = 6
+  MAX_ANIMES_PER_PAGE = 30
 
   # chia-anime image-url
   def image_path

@@ -7,11 +7,6 @@ class ApplicationController < ActionController::Base
 
   before_action { @section = '' }
 
-  #define number of items per page to paginate
-  def get_number_of_items_per_page
-    30
-  end
-
   protected
 
   def configure_permitted_parameters

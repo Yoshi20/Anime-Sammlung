@@ -3,13 +3,13 @@
 
 .row.table-nav
   -# Letter list
-  .col-md-6
+  .col-md-5
     .letter-list
       = link_to animes_path do
         - if params[:order_by_letter].present?
-          = "Alle"
+          = "All"
         - else
-          %u= "Alle"
+          %u= "All"
 
       = link_to animes_path(order_by_letter: '#'), class: 'letter' do
         - if params[:order_by_letter] == '#'
@@ -24,8 +24,13 @@
           - else
             = letter
 
+  -# set sort queries
+  .col-md-3
+    .set-sort-queries
+      = link_to 'Recently added', animes_path(sort: 'created_at', order: 'desc', limit: Anime::MAX_ANIMES_PER_PAGE)
+
   -# search form
-  .col-md-6
+  .col-md-4
     .search-form.pull-right
       = form_tag animes_path, method:'get', class: 'form-inline' do
         = text_field_tag :search, params[:search], class: 'form-control'
@@ -60,7 +65,7 @@
     .col-md-2
       - if user_signed_in?
         .add-anime-button
-          = link_to 'Add Anime', new_anime_path, class:'btn btn-primary pull-right'
+          = link_to 'Add Anime', new_anime_path, class:'btn btn-primary pull-right', style: 'margin-bottom: 15px;'
 
 .row.content-footer{style: 'margin-top: -25px; margin-bottom: 20px;'}
   -# Random pictures

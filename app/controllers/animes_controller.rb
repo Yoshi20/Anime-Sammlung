@@ -93,8 +93,13 @@ class AnimesController < ApplicationController
         @animes = @animes.reverse_order
       end
 
-      # paginate animes (have to be called last)
-      @animes = @animes.paginate(page: params[:page], per_page: get_number_of_items_per_page)
+      # handle the limit parameter
+      if params[:limit].present?
+        @animes = @animes.limit(params[:limit])
+      else
+        # paginate animes (have to be called last)
+        @animes = @animes.paginate(page: params[:page], per_page: Anime::MAX_ANIMES_PER_PAGE)
+      end
     end
 
     # handle ajax request
@@ -204,6 +209,6 @@ class AnimesController < ApplicationController
     end
 
     def table_params
-      params.permit(:page, :sort, :order, :order_by_letter, :genre_id, :search)
+      params.permit(:page, :sort, :order, :order_by_letter, :genre_id, :search, :limit)
     end
 end

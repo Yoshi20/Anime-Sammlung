@@ -16,7 +16,8 @@ module AnimesHelper
       order_by_letter: params[:order_by_letter],
       target_audience_id: params[:target_audience_id],
       genre_id: params[:genre_id],
-      search: params[:search]
+      search: params[:search],
+      limit: params[:limit],
     }
   end
 
