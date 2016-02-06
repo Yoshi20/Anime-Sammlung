@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.includes(:ratings).all.order(:created_at)
+    @users = User.all.order(created_at: :desc)
   end
 
   # DELETE /users/1

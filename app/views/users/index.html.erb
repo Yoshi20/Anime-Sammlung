@@ -11,12 +11,13 @@
       <th>Created at</th>
       <th>Admin?</th>
       <th class='action'></th>
+      <th></th>
     </tr>
   </thead>
 
   <tbody>
 
-    <% User.all.each do |user| %>
+    <% @users.each do |user| %>
       <tr>
         <td class=''><%= user.username %></td>
         <td class=''><%= user.email %></td>
