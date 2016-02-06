@@ -69,4 +69,8 @@ class User < ActiveRecord::Base
     puts animes_this_user_created.joins(", ")
   end
 
+  def admin?
+    self.is_admin == true
+  end
+
 end

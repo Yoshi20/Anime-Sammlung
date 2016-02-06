@@ -6,14 +6,18 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.includes(:ratings).all
+    @users = User.includes(:ratings).all.order(:created_at)
   end
 
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user.destroy
-    flash[:notice] = "User was successfully deleted"
+    if current_user.admin?
+      @user.destroy
+      flash[:notice] = "User was successfully deleted"
+    else
+      raise 'impossibru!'
+    end
     redirect_to users_path
   end
 

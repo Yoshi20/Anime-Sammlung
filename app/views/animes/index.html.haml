@@ -59,7 +59,7 @@
 
     -# Import Animes
     .col-md-5
-      - if user_signed_in? && current_user.is_admin?
+      - if user_signed_in? && current_user.admin?
         .import-anime
           %h3{style: 'margin-top: 0px; margin-bottom: 0px;'}
             = "Import Animes"

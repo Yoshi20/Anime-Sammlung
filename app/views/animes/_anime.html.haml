@@ -49,6 +49,6 @@
         %span.glyphicon.glyphicon-eye-open
       = link_to edit_anime_path(anime), class:'btn btn-default btn-xs' do
         %span.glyphicon.glyphicon-pencil
-      - if (anime.user == current_user) || current_user.is_admin
+      - if (anime.user == current_user) || current_user.admin?
         = link_to anime, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-default btn-xs' do
           %span.glyphicon.glyphicon-trash

@@ -23,9 +23,9 @@
         <td class='text-center'><%= user.sign_in_count %></td>
         <td class=''><%= user.current_sign_in_at %></td>
         <td class=''><%= user.created_at %></td>
-        <td class='text-center'><%= user.is_admin %></td>
+        <td class='text-center'><%= user.admin? %></td>
         <td class='text-center' style='vertical-align: middle'>
-          <% if current_user.is_admin && user != current_user %>
+          <% if current_user.admin? && user != current_user %>
             <%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs' %>
           <% end %>
         </td>
