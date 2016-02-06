@@ -60,7 +60,13 @@ class AnimesController < ApplicationController
       # handle parameters to sort and order
       sort = params[:sort]
       if sort.present?
-        if sort == 'genres'
+        if sort == 'unseen' && user_signed_in?
+          seen_anime_ids = current_user.ratings.map(&:anime_id)
+          @animes = Anime.where.not(id: seen_anime_ids).order(:name)
+        elsif sort == 'recommended' && user_signed_in?
+          seen_anime_ids = current_user.ratings.map(&:anime_id)
+          @animes = Anime.where.not(id: seen_anime_ids).where("rating >= 4").order(rating: :desc).order(:name)
+        elsif sort == 'genres'
           #blup: TODO -> animes ohne genres hinzufügen
           @animes = @animes.joins(:genres).merge(Genre.order("genres.name"))
         elsif sort == 'target_audience'

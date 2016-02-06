@@ -3,7 +3,7 @@
 
 .row.table-nav
   -# Letter list
-  .col-md-5
+  .col-md-6
     .letter-list
       = link_to animes_path do
         - if params[:order_by_letter].present?
@@ -24,17 +24,23 @@
           - else
             = letter
 
-  -# set sort queries
-  .col-md-3
-    .set-sort-queries
-      = link_to 'Recently added', animes_path(sort: 'created_at', order: 'desc', limit: Anime::MAX_ANIMES_PER_PAGE)
-
   -# search form
-  .col-md-4
+  .col-md-6
     .search-form.pull-right
       = form_tag animes_path, method:'get', class: 'form-inline' do
         = text_field_tag :search, params[:search], class: 'form-control'
         = submit_tag 'Search', name:nil, class: 'form-control btn btn-default'
+
+-# special sort queries
+.row.special-sort-queries
+  .col-md-2
+    = link_to 'Recently added', animes_path(sort: 'created_at', order: 'desc', limit: Anime::MAX_ANIMES_PER_PAGE)
+  .col-md-2
+    - if user_signed_in?
+      = link_to 'Unseen Animes', animes_path(sort: 'unseen')
+  .col-md-2
+    - if user_signed_in?
+      = link_to 'Recommended', animes_path(sort: 'recommended')
 
 -# anime list
 .row.anime-list

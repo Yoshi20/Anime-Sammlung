@@ -12,6 +12,7 @@ class RatingsController < ApplicationController
         r_val = params[:rating].to_i
         new_rating = Rating.create!({anime_id: a_id, user: current_user, rating: r_val})
         flash[:success] = "Your rating for '#{new_rating.anime.name}' has been saved."
+
       else
         flash[:alert] = "There's no Anime id! :,O"
       end
@@ -25,6 +26,7 @@ class RatingsController < ApplicationController
       }
       format.json {
         avg_rating = Anime.find(params[:anime_id]).average_rating
+        flash[:success] = nil
         render json: { success: true, rating_id: new_rating.id, avg_rating: avg_rating }, status: :ok
       }
     end
