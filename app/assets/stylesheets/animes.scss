@@ -7,31 +7,37 @@
   margin-left: -20px;
 }
 
-.genre-select label {
-  float: left;
-  margin-right: 10px;
-  margin-bottom: 0;
+.anime-list-header {
 
-  &:after{
-    content: "";
-    clear: both;
+  .genre-select label {
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 0;
+
+    &:after{
+      content: "";
+      clear: both;
+    }
   }
 }
 
-.anime-list-body tr td {
-  vertical-align: middle !important;
-}
+.anime-list-body {
 
-.genres {
-  width: 10%;
-}
+  tr td {
+    vertical-align: middle !important;
+  }
 
-.actions {
-  width: 4%;
-  a {
-    display: block;
-    width: 25px;
-    margin-right: auto;
-    margin-left: auto;
+  .ratings {
+    width: 10%;
+  }
+
+  .actions {
+    width: 4%;
+    a {
+      display: block;
+      width: 25px;
+      margin-right: auto;
+      margin-left: auto;
+    }
   }
 }
