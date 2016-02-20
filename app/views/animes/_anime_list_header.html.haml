@@ -1,5 +1,6 @@
 %tr
   %th
+    .glyphicon{class: params[:order] == 'asc' ? 'glyphicon-chevron-up' : 'glyphicon-chevron-down'}
   %th
     = link_to 'Name', animes_path(table_params.merge(sort: 'name')), data: {order: 'asc'}
   %th

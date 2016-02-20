@@ -15,6 +15,7 @@ $ ->
       $('.anime-list-body').html(response.animes)
       window.history.pushState('params', 'Animes', '/animes?' + response.params)
       hideRateButtons()
+      toggleAscDescGlyphicon()
     getAnimesAjaxRequest(url, data, successCallback)
 
   # handle genre selection
@@ -138,3 +139,11 @@ getAnimesAjaxRequest = (url, data, successCallback) ->
     error: ->
       console.log("error: get animes ajax request")
     success: successCallback
+
+toggleAscDescGlyphicon = ->
+  $glyphicon = $('.anime-list-header').find('.glyphicon')
+  params = getParamsAsHash()
+  if params.order == 'desc'
+    $glyphicon.removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down')
+  else
+    $glyphicon.removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up')
