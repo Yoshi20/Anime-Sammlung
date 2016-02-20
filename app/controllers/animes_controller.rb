@@ -51,7 +51,10 @@ class AnimesController < ApplicationController
         seen_anime_ids = current_user.ratings.map(&:anime_id)
         case special
         when 'recently'
-          @animes = all_animes.order(created_at: :desc).limit(Anime::MAX_ANIMES_PER_PAGE)
+          # note: das ist mit absicht so umständlich gebaut, damit bei jedem :sort trozdem immer die gleichen animes aufgelistet werden
+          max_recent_time = all_animes.order(created_at: :desc).limit(Anime::MAX_ANIMES_PER_PAGE).last.created_at
+          @animes = all_animes.where('animes.created_at >= ?', max_recent_time).order(created_at: :desc).limit(Anime::MAX_ANIMES_PER_PAGE)
+          params[:limit] = Anime::MAX_ANIMES_PER_PAGE
         when 'unseen'
           if user_signed_in?
             @animes = all_animes.where.not(id: seen_anime_ids).order(:name)
@@ -100,6 +103,7 @@ class AnimesController < ApplicationController
         when 'target_audience'
           @animes = @animes.joins(:target_audience).merge(TargetAudience.order("target_audience.name"))
         when 'number_of_ratings'
+          #blup: TODO -> funktioniert noch nicht richtig
           @animes = Anime.joins(:ratings).merge(Rating.group("animes.id, ratings.anime_id").order("count(ratings.anime_id)")).where(id: @animes)
         when 'rating'
           @animes = @animes.order("animes.rating")
