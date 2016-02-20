@@ -4,7 +4,7 @@ class Anime < ActiveRecord::Base
   belongs_to :user
   has_many :ratings, dependent: :destroy
 
-  validates :name, :rating, presence: true
+  validates :name, :target_audience, :genres, :rating, presence: true
   validates :name, uniqueness: true, length: {maximum:50}
   validates :episodes, numericality: {greater_than: -1}
   validates :ova_episodes, numericality: {greater_than: -1}
