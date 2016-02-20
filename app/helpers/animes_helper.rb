@@ -18,6 +18,7 @@ module AnimesHelper
       genre_id: params[:genre_id],
       search: params[:search],
       limit: params[:limit],
+      special: params[:special],
     }
   end
 

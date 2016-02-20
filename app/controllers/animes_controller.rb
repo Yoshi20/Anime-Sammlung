@@ -8,21 +8,23 @@ class AnimesController < ApplicationController
   # GET /animes
   # GET /animes.json
   def index
-    # get animes
-    @animes = Anime.includes(:target_audience, :genres, :ratings).all
+    # get all animes
+    all_animes = Anime.includes(:target_audience, :genres, :ratings).all
 
-    if @animes.empty?
+    if all_animes.empty?
       flash.now[:alert] = "There are no Animes to list."
     else
+
+    # prefilter animes (set @animes)
       # handle search (self written method)
       if params[:search].present?
-        @animes = @animes.search(params[:search])
+        @animes = all_animes.search(params[:search])
         if @animes.empty?
           flash.now[:alert] = "There were no Animes found with this search query."
         end
       end
 
-      # handle params to limit selected animes
+      # handle letter list
       if params[:order_by_letter].present?
         if params[:order_by_letter] == '#'
           # Get all animes which starts NOT with 'A'..'Z'
@@ -31,18 +33,40 @@ class AnimesController < ApplicationController
             a << Anime.where("name LIKE ?", "#{letter}%").map(&:id)
           end
           a = a.flatten
-          @animes = @animes.where.not(id: a)
+          @animes = all_animes.where.not(id: a)
            if @animes.empty?
             flash.now[:alert] = "There are no Animes that begin with a special character."
           end
         else
-          @animes = @animes.where('animes.name LIKE ?', "#{params[:order_by_letter]}%")
+          @animes = all_animes.where('animes.name LIKE ?', "#{params[:order_by_letter]}%")
           if @animes.empty?
             flash.now[:alert] = "There are no Animes that begin with the letter '#{params[:order_by_letter]}'."
           end
         end
       end
 
+      # handle special sort queries
+      special = params[:special]
+      if special.present? && user_signed_in?
+        seen_anime_ids = current_user.ratings.map(&:anime_id)
+        case special
+        when 'recently'
+          @animes = all_animes.order(created_at: :desc).limit(Anime::MAX_ANIMES_PER_PAGE)
+        when 'unseen'
+          if user_signed_in?
+            @animes = all_animes.where.not(id: seen_anime_ids).order(:name)
+          end
+        when 'recommended'
+          if user_signed_in?
+            @animes = all_animes.where.not(id: seen_anime_ids).where("animes.rating >= 4").order(rating: :desc).order(:name)
+          end
+        end
+      end
+
+      @animes ||= all_animes
+
+    # filter animes
+      # handle genres
       if params[:genre_id].present?
         @animes = @animes.joins(:genres).where(genres: {id: params[:genre_id].to_i})
         if @animes.empty?
@@ -50,6 +74,7 @@ class AnimesController < ApplicationController
         end
       end
 
+      # handle target audiences
       if params[:target_audience_id].present?
         @animes = @animes.joins(:target_audience).where(target_audience: {id: params[:target_audience_id].to_i})
         if @animes.empty?
@@ -57,31 +82,26 @@ class AnimesController < ApplicationController
         end
       end
 
-      # handle parameters to sort and order
+      # handle sort parameter
       sort = params[:sort]
       if sort.present?
-        if sort == 'unseen' && user_signed_in?
-          seen_anime_ids = current_user.ratings.map(&:anime_id)
-          @animes = Anime.where.not(id: seen_anime_ids).order(:name)
-        elsif sort == 'recommended' && user_signed_in?
-          seen_anime_ids = current_user.ratings.map(&:anime_id)
-          @animes = Anime.where.not(id: seen_anime_ids).where("rating >= 4").order(rating: :desc).order(:name)
-        elsif sort == 'genres'
-          #blup: TODO -> animes ohne genres hinzufügen
+        case sort
+        when 'genres'
+          #blup: TODO -> auch animes ohne genres hinzufügen
           @animes = @animes.joins(:genres).merge(Genre.order("genres.name"))
-        elsif sort == 'target_audience'
+        when 'target_audience'
           @animes = @animes.joins(:target_audience).merge(TargetAudience.order("target_audience.name"))
-        elsif sort == 'number_of_ratings'
+        when 'number_of_ratings'
           @animes = Anime.joins(:ratings).merge(Rating.group("animes.id, ratings.anime_id").order("count(ratings.anime_id)")).where(id: @animes)
-        elsif sort == 'rating'
+        when 'rating'
           @animes = @animes.order("animes.rating")
           @animes = params[:order] == 'desc' ? @animes.order(name: :desc) : @animes.order(:name)
-        elsif sort == 'my_rating'
+        when 'my_rating'
           #blup: TODO -> animes ohne my_ratings hinzufügen
           # @animes = Anime.joins("left join ratings on ratings.anime_id = animes.id").merge(Rating.where(user_id: current_user).order("ratings.rating"))
           @animes = Anime.joins(:ratings).merge(Rating.where(user_id: current_user).order("ratings.rating"))
           @animes = params[:order] == 'desc' ? @animes.order(name: :desc) : @animes.order(:name)
-        elsif sort == 'episodes'
+        when 'episodes'
           #blup: TODO -> episodes + ova_episodes
           # a = @animes.map{|a| [{id: a.id, episodes: a.episodes + (a.ova_episodes || 0)}]}
           # a = a.sort_by{|i| i[0][:episodes]}
@@ -95,6 +115,7 @@ class AnimesController < ApplicationController
         @animes = @animes.order('animes.name')
       end
 
+      # handle the order parameter
       if params[:order] == "desc"
         @animes = @animes.reverse_order
       end
@@ -108,7 +129,6 @@ class AnimesController < ApplicationController
       end
     end
 
-    # handle ajax request
     respond_to do |format|
       format.json {
         animes_html = render_to_string(partial: @animes, formats: [:html]).html_safe
@@ -215,6 +235,6 @@ class AnimesController < ApplicationController
     end
 
     def table_params
-      params.permit(:page, :sort, :order, :order_by_letter, :genre_id, :search, :limit)
+      params.permit(:page, :sort, :order, :order_by_letter, :genre_id, :search, :limit, :special)
     end
 end

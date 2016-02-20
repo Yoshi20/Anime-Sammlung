@@ -34,13 +34,25 @@
 -# special sort queries
 .row.special-sort-queries
   .col-md-2
-    = link_to 'Recently added', animes_path(sort: 'created_at', order: 'desc', limit: Anime::MAX_ANIMES_PER_PAGE)
+    = link_to animes_path(special: 'recently') do
+      - if params[:special] == 'recently'
+        %u= 'Recently added'
+      - else
+        = 'Recently added'
   .col-md-2
     - if user_signed_in?
-      = link_to 'Unseen Animes', animes_path(sort: 'unseen')
+      = link_to animes_path(special: 'unseen') do
+        - if params[:special] == 'unseen'
+          %u= 'Unseen Animes'
+        - else
+          = 'Unseen Animes'
   .col-md-2
     - if user_signed_in?
-      = link_to 'Recommended', animes_path(sort: 'recommended')
+      = link_to animes_path(special: 'recommended') do
+        - if params[:special] == 'recommended'
+          %u= 'Recommended'
+        - else
+          = 'Recommended'
 
 -# anime list
 .row.anime-list

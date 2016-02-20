@@ -5,13 +5,21 @@
   %th
     .target-audience-select
       = form_tag animes_path, method:'get' do
-        = link_to 'Target Audience', animes_path(table_params.merge(sort: 'target_audience')), data: {order: 'asc'}
+        - params_to_submit = table_params.merge(sort: 'target_audience')
+        = link_to 'Target Audience', animes_path(params_to_submit), data: {order: 'asc'}
+        - params_to_submit.delete(:target_audience_id)
+        - params_to_submit.each do |key, value|
+          = hidden_field_tag key, value if value.present?
         = select_tag :target_audience_id, options_from_collection_for_select(@target_audience, 'id', 'name', params[:target_audience_id]), prompt: 'all'
         = submit_tag "Sort"
   %th
     .genre-select
       = form_tag animes_path, method:'get' do
-        = link_to 'Genres', animes_path(table_params.merge(sort: 'genres')), data: {order: 'asc'}
+        - params_to_submit = table_params.merge(sort: 'genres')
+        = link_to 'Genres', animes_path(params_to_submit), data: {order: 'asc'}
+        - params_to_submit.delete(:genre_id)
+        - params_to_submit.each do |key, value|
+          = hidden_field_tag key, value if value.present?
         = select_tag :genre_id, options_from_collection_for_select(@genres, 'id', 'name', params[:genre_id]), prompt: 'all'
         = submit_tag "Sort"
   %th.text-center
