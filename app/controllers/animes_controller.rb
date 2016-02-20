@@ -70,7 +70,11 @@ class AnimesController < ApplicationController
       if params[:genre_id].present?
         @animes = @animes.joins(:genres).where(genres: {id: params[:genre_id].to_i})
         if @animes.empty?
-          flash.now[:alert] = "There are no Animes with the genre '#{Genre.find(params[:genre_id].to_i).name}'."
+          if params[:target_audience_id].present?
+            flash.now[:alert] = "There are no Animes with this genre and target audience combination."
+          else
+            flash.now[:alert] = "There are no Animes with the genre '#{Genre.find(params[:genre_id].to_i).name}'."
+          end
         end
       end
 
@@ -78,7 +82,11 @@ class AnimesController < ApplicationController
       if params[:target_audience_id].present?
         @animes = @animes.joins(:target_audience).where(target_audience: {id: params[:target_audience_id].to_i})
         if @animes.empty?
-          flash.now[:alert] = "There are no Animes with the target audience '#{TargetAudience.find(params[:target_audience_id].to_i).name}'."
+          if params[:genre_id].present?
+            flash.now[:alert] = "There are no Animes with this genre and target audience combination."
+          else
+            flash.now[:alert] = "There are no Animes with the target audience '#{TargetAudience.find(params[:target_audience_id].to_i).name}'."
+          end
         end
       end
 
