@@ -14,3 +14,14 @@
   - if user_signed_in? && current_user.admin?
     %li{role: "presentation", class: (@section == 'users' ? 'active' : 'inactive')}
       = link_to 'Users', users_path
+
+  %li.dropdown.active.pull-right
+    %a.dropdown-toggle{"data-toggle"=>"dropdown", href:"#"}
+      = "Account"
+      %span.caret
+    %ul.dropdown-menu
+      %li= link_to "Root-Path", root_path
+      %li= "blup"
+      %li= "blap"
+      %li.divider
+      %li= "blep"

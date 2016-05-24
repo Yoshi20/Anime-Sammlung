@@ -9,16 +9,15 @@
   %body
     .wrapper.fixed-width
       .row.header
+        -# navigator header
         .col-md-12
-          -# navigator header
-          .col-md-6
-            .row.navigation-header
-              = render '/layouts/navigation'
+          .row.navigation-header
+            = render '/layouts/navigation'
 
-          -# login header
-          .col-md-6
-            .row.login-header
-              = render '/layouts/login'
+        -# -# login header
+        -# .col-md-6
+        -#   .row.login-header
+        -#     = render '/layouts/login'
 
       -# flash notifications and alerts
       .row.flashes
