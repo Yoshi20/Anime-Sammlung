@@ -4,18 +4,19 @@
       %h1= "Overview"
 
   .row.content
-    - animes_index = Anime.create_alphabetical_index(@animes)
-    - letter_range = ('A'..'Z').to_a.unshift('#')
-    - letter_range.each_slice(4) do |letter_slice|
-      .row
-        - letter_slice.each do |letter|
-          .col-sm-3
-            %h2= letter
-            - animes_index[letter].to_a.each do |anime|
-              - if @rated_animes.present? && @rated_animes.include?(anime.id)
-                - glyphicon_status = 'check'
-              - else
-                - glyphicon_status = 'unchecked'
-              %span.glyphicon{class: "glyphicon-#{glyphicon_status}"}
-                = link_to anime.name, anime_path(anime), style: 'margin-left: -8px'
-              %br
+    .col-md-12
+      - animes_index = Anime.create_alphabetical_index(@animes)
+      - letter_range = ('A'..'Z').to_a.unshift('#')
+      - letter_range.each_slice(4) do |letter_slice|
+        .row
+          - letter_slice.each do |letter|
+            .col-sm-3
+              %h2= letter
+              - animes_index[letter].to_a.each do |anime|
+                - if @rated_animes.present? && @rated_animes.include?(anime.id)
+                  - glyphicon_status = 'check'
+                - else
+                  - glyphicon_status = 'unchecked'
+                %span.glyphicon{class: "glyphicon-#{glyphicon_status}"}
+                  = link_to anime.name, anime_path(anime), style: 'margin-left: -8px'
+                %br
