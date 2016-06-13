@@ -74,10 +74,12 @@
               %div
                 = radio_button_tag :rating, x+1, (x+1) == my_rating, {id: "anime_rating_#{@anime.id}_#{x}"}
                 = label_tag "anime_rating_#{@anime.id}_#{x}", x+1
-            = submit_tag 'Rate', class:'btn btn-primary btn-xs'
+            %p
+              = submit_tag 'Rate', class:'btn btn-primary btn-xs'
             - rating = Rating.find_by(user_id: current_user, anime_id: @anime)
             - if rating.present?
-              = link_to 'Delete Rating', rating_path(rating), method: :delete, class: 'btn btn-danger btn-xs', style: "margin-left: -24px;"
+              %p
+                = link_to 'Delete Rating', rating_path(rating), method: :delete, class: 'btn btn-danger btn-xs', style: "margin-left: -24px; margin-top: -10px;"
 
   .row.anime-text{style: 'margin-top: 10px;'}
     - if @anime.comment.present?

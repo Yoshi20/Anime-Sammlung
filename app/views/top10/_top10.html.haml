@@ -9,29 +9,29 @@
   %td{style: 'vertical-align: middle'}
     = link_to anime.name, anime
 
-  %td{style: 'vertical-align: middle'}
+  %td.hidden-xs{style: 'vertical-align: middle'}
     = anime.target_audience.order(:name).map(&:name).join(", ")
 
-  %td{style: 'vertical-align: middle'}
+  %td.hidden-xs{style: 'vertical-align: middle'}
     = anime.genres.order(:name).map(&:name).join(", ")
 
-  %td.text-center{style: 'vertical-align: middle'}
+  %td.text-center.hidden-xs{style: 'vertical-align: middle'}
     = anime.episodes
 
-  %td.text-center{style: 'vertical-align: middle'}
+  %td.text-center.hidden-xs{style: 'vertical-align: middle'}
     = check_box_tag '', '', anime.finished?, disabled: true
   
   %td.hidden-md.hidden-sm.hidden-xs{style: 'vertical-align: middle'}
     = truncate(anime.comment, length: 50)
 
-  %td.text-center{style: 'vertical-align: middle'}
+  %td.text-center.hidden-xs{style: 'vertical-align: middle'}
     = anime.ratings.to_a.count
 
-  %td.text-center{style: 'vertical-align: middle'}
+  %td.text-center.hidden-xs{style: 'vertical-align: middle'}
     %strong
       = anime.rating
 
   - if user_signed_in?
-    %td.text-center{style: 'vertical-align: middle'}
+    %td.text-center.hidden-xs{style: 'vertical-align: middle'}
       - my_rating = current_user.get_rating_for(anime).try(:rating)
       = my_rating.present? ? my_rating : '-'

@@ -6,29 +6,29 @@
   %td
     = link_to anime.name, anime
 
-  %td
+  %td.hidden-xs
     = anime.target_audience.order(:name).map(&:name).join(', ')
 
-  %td
+  %td.hidden-xs
     = anime.genres.order(:name).map(&:name).join(', ')
 
-  %td.text-center
+  %td.text-center.hidden-xs
     = anime.episodes #+ (anime.ova_episodes || 0)
 
-  %td.text-center
+  %td.text-center.hidden-xs
     = check_box_tag '', '', anime.finished?, disabled: true
 
   %td.hidden-md.hidden-sm.hidden-xs
     = truncate(anime.comment, length: 50)
 
-  %td.text-center.ratings-count
+  %td.text-center.ratings-count.hidden-xs
     = anime.ratings.to_a.count
 
   %td.text-center.avg-rating
     = anime.rating
 
   - if user_signed_in?
-    %td.text-center.my-rating
+    %td.text-center.my-rating.hidden-xs
       - my_rating = current_user.get_rating_for(anime).try(:rating)
       = my_rating.present? ? my_rating : '-'
   
