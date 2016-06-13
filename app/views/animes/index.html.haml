@@ -1,5 +1,6 @@
 .row.title-div
-  %h1= "Anime-List"
+  .col-md-12
+    %h1= "Anime-List"
 
 .row.table-nav
   -# Letter list
@@ -56,34 +57,35 @@
 
 -# anime list
 .row.anime-list
-  %table.table.table-striped
-    %thead.anime-list-header
-      = render "anime_list_header"
+  .col-md-12
+    %table.table.table-striped
+      %thead.anime-list-header
+        = render "anime_list_header"
 
-    %tbody.anime-list-body
-      = render @animes
+      %tbody.anime-list-body
+        = render @animes
 
-  .row.anime-list-footer
-    -# pageinator
-    .col-md-5
-      - if @animes.any?
-        = render 'paginator'
+    .row.anime-list-footer
+      -# pageinator
+      .col-md-5
+        - if @animes.any?
+          = render 'paginator'
 
-    -# Import Animes
-    .col-md-5
-      - if user_signed_in? && current_user.admin?
-        .import-anime
-          %h3{style: 'margin-top: 0px; margin-bottom: 0px;'}
-            = "Import Animes"
-          = form_tag import_animes_path, multipart:true do
-            = file_field_tag :file, style: 'display: inline'
-            = submit_tag "Import", class: 'btn btn-primary', style: 'margin-top: -25px;'
+      -# Import Animes
+      .col-md-5
+        - if user_signed_in? && current_user.admin?
+          .import-anime
+            %h3{style: 'margin-top: 0px; margin-bottom: 0px;'}
+              = "Import Animes"
+            = form_tag import_animes_path, multipart:true do
+              = file_field_tag :file, style: 'display: inline'
+              = submit_tag "Import", class: 'btn btn-primary', style: 'margin-top: -25px;'
 
-    -# 'Add Anime' button
-    .col-md-2
-      - if user_signed_in?
-        .add-anime-button
-          = link_to 'Add Anime', new_anime_path, class:'btn btn-primary pull-right', style: 'margin-bottom: 15px;'
+      -# 'Add Anime' button
+      .col-md-2
+        - if user_signed_in?
+          .add-anime-button
+            = link_to 'Add Anime', new_anime_path, class:'btn btn-primary pull-right', style: 'margin-bottom: 15px;'
 
 .row.content-footer{style: 'margin-top: -25px; margin-bottom: 20px;'}
   -# Random pictures
