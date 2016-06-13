@@ -7,15 +7,15 @@
       %th
       %th
       %th Name
-      %th Target Audience
-      %th Genres
-      %th.text-center Episodes
-      %th.text-center Finished
+      %th.hidden-xs Target Audience
+      %th.hidden-xs Genres
+      %th.text-center.hidden-xs Episodes
+      %th.text-center.hidden-xs Finished
       %th.hidden-md.hidden-sm.hidden-xs Comment
-      %th.text-center # Rated
-      %th.text-center Ø Rating
+      %th.text-center.hidden-xs # Rated
+      %th.text-center.hidden-xs Ø Rating
       - if user_signed_in?
-        %th.text-center My Rating
+        %th.text-center.hidden-xs My Rating
    
   %tbody
     - @animes.each_with_index do |anime, index|
